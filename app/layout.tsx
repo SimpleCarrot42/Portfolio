@@ -13,7 +13,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      {/* min-h-screen ensures the page is at least the height of the browser */}
+      <body className="min-h-screen flex flex-col">
+        {children}
+      </body>
     </html>
   )
 }

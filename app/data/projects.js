@@ -1,33 +1,35 @@
 export const projects = [
   {
     id: "01",
-    title: "Aura Interface",
-    category: "Interaction Design",
-    description:
-      "Experimental UI system focused on motion, perception, and sensory feedback.",
-    year: "2025",
-    tags: ["React", "Framer Motion", "WebGL"],
-    gradient: "from-orange-500 to-red-600",
+    slug: "godrive",
+    title: "GoDrive",
+    // 🌍 Nested translations
+    category: {
+      EN: "Full-Stack Platform",
+      CZ: "Full-Stack Platforma"
+    },
+    description: {
+      EN: "Secure file-sharing platform built with Next.js and Go.",
+      CZ: "Zabezpečená platforma pro sdílení souborů postavená na Next.js a Go."
+    },
+    image: "/images/projects/1.png", 
+    year: "2026",
+    tags: ["Next.js", "Go", "PostgreSQL"],
   },
   {
     id: "02",
-    title: "GoDrive",
-    category: "Full-Stack Platform",
-    description:
-      "Secure file-sharing platform built with Next.js, Go, and modern auth flows.",
-    year: "2024",
-    tags: ["Next.js", "Go", "PostgreSQL"],
-    gradient: "from-blue-500 to-cyan-600",
-  },
-  {
-    id: "03",
+    slug: "minimal-portfolio",
     title: "Minimal Portfolio System",
-    category: "Frontend Architecture",
-    description:
-      "Highly optimized portfolio framework with motion-first UX principles.",
+    category: {
+      EN: "Frontend Architecture",
+      CZ: "Frontend Architektura"
+    },
+    description: {
+      EN: "Highly optimized portfolio framework.",
+      CZ: "Vysoce optimalizovaný framework pro portfolia."
+    },
+    image: "/images/projects/1.png",
     year: "2025",
-    tags: ["TypeScript", "Tailwind", "Vercel"],
-    gradient: "from-emerald-500 to-teal-600",
+    tags: ["TypeScript", "Tailwind"],
   },
-
 ];

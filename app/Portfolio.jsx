@@ -1,50 +1,86 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Navigation from "./components/Navigation";
 import HomePage from "./components/HomePage";
-import ProjectsPage from "./components/ProjectsPage";
+import ProjectsPage from "./components/ProjectsPage.";
 import ContactPage from "./components/ContactPage";
+import Footer from "./components/Footer"; // 1. Import your new Footer
 
-const ease = [0.16, 1, 0.3, 1];
+// 🔌 Importing the data from the neighbor folder
+import { projects as jsonProjects } from "./data/projects.js";
 
 export default function Portfolio() {
   const [currentPage, setCurrentPage] = useState("home");
+  const [isDark, setIsDark] = useState(false);
+  const [lang, setLang] = useState("EN");
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const savedLang = localStorage.getItem("lang");
+    if (savedTheme) setIsDark(savedTheme === "dark");
+    if (savedLang) setLang(savedLang);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", isDark);
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  }, [isDark]);
+
+  useEffect(() => {
+    localStorage.setItem("lang", lang);
+  }, [lang]);
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)]">
-      <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
+    /* 2. Added flex and min-h-screen to the wrapper */
+    <div className={`min-h-screen flex flex-col transition-colors duration-700 ${
+      isDark ? "bg-neutral-950 text-white" : "bg-white text-black"
+    }`}>
+      <Navigation
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        isDark={isDark}
+        setIsDark={setIsDark}
+        lang={lang}
+        setLang={setLang}
+      />
 
-      <motion.div
-        key={currentPage}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
-        transition={{ duration: 0.5, ease }}
-      >
-        {currentPage === "home" && <HomePage setCurrentPage={setCurrentPage} />}
-        {currentPage === "projects" && <ProjectsPage />}
-        {currentPage === "contact" && <ContactPage />}
-      </motion.div>
+      {/* 3. Wrap AnimatePresence in a div with flex-grow to push the footer down */}
+      <div className="flex-grow pt-24">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentPage + lang}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4 }}
+          >
+            {currentPage === "home" && (
+              <HomePage 
+                setCurrentPage={setCurrentPage} 
+                lang={lang} 
+                isDark={isDark} 
+                allProjects={jsonProjects} 
+              />
+            )}
+            {currentPage === "projects" && (
+              <ProjectsPage 
+                setCurrentPage={setCurrentPage} 
+                lang={lang} 
+                isDark={isDark} 
+                allProjects={jsonProjects} 
+              />
+            )}
+            {currentPage === "contact" && (
+              <ContactPage lang={lang} isDark={isDark} />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
-      <footer className="border-t border-[var(--border)] py-12 px-6 md:px-12 lg:px-20">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-xs font-bold uppercase tracking-[0.4em] text-[var(--fg)]/40">
-            © 2026 Marek Janasek
-          </p>
-        </div>
-      </footer>
-
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
+      {/* 4. The Footer is now placed here, outside the main content but inside the flex wrapper */}
+      <Footer isDark={isDark} />
     </div>
   );
 }
