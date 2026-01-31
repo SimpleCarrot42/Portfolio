@@ -1,28 +1,52 @@
 "use client";
+
 import { motion } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 
 const ease = [0.16, 1, 0.3, 1];
 
-export default function Navigation({ 
-  currentPage, 
-  setCurrentPage, 
-  isDark, 
-  setIsDark, 
-  lang, 
+export default function Navigation({
+  currentPage,
+  setCurrentPage,
+  isDark,
+  setIsDark,
+  lang,
   setLang,
-  forceBlack = false 
+  forceBlack = false,
 }) {
-  const activeColor = forceBlack ? "#0a0a0a" : (isDark ? "#ffffff" : "#0a0a0a");
-  const mutedColor = forceBlack ? "rgba(10,10,10,0.4)" : (isDark ? "rgba(255,255,255,0.4)" : "rgba(10,10,10,0.4)");
-  const subtleColor = forceBlack ? "rgba(10,10,10,0.5)" : (isDark ? "rgba(255,255,255,0.5)" : "rgba(10,10,10,0.5)");
+  const text = forceBlack ? "text-black" : isDark ? "text-white" : "text-black";
+  const muted = forceBlack ? "text-black/40" : isDark ? "text-white/40" : "text-black/40";
+  const subtle = forceBlack ? "text-black/50" : isDark ? "text-white/50" : "text-black/50";
 
-  // Helper to handle the home redirect
-  const handleHomeClick = () => {
-    if (window.location.pathname !== "/") {
+  const labels = {
+    EN: { home: "home", portfolio: "portfolio", projects: "projects", about: "about", contact: "contact" },
+    CZ: { home: "domů", portfolio: "portfolio", projects: "projekty", about: "o mně", contact: "kontakt" },
+  };
+
+  const navKeys = ["home", "portfolio", "projects", "about", "contact"];
+
+  const handleNavClick = (key) => {
+    // 1. HARD REDIRECTS (Separate URLs)
+    if (key === "portfolio") {
+      window.location.href = "/portfolio";
+      return;
+    }
+    if (key === "about") {
+      window.location.href = "/about";
+      return;
+    }
+    if (key === "home") {
       window.location.href = "/";
+      return;
+    }
+
+    // 2. STATE-BASED SCROLLING (Elements on the Home Page)
+    if (window.location.pathname !== "/") {
+      // If user is on /portfolio or /about, they must go home first to see these sections
+      window.location.href = `/#${key}`;
     } else {
-      setCurrentPage("home");
+      // If already on home, just update state to trigger scroll
+      setCurrentPage(key);
     }
   };
 
@@ -31,63 +55,40 @@ export default function Navigation({
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease }}
-      className="fixed top-0 left-0 w-full p-6 md:px-12 flex justify-between items-center z-[100] backdrop-blur-sm"
+      className="fixed top-0 left-0 w-full p-6 md:px-12 flex justify-between items-center z-[100] backdrop-blur-sm transition-colors duration-500"
     >
-      {/* Logo/Name - Now redirects to root URL */}
-      <div 
-        className="flex items-center gap-3 cursor-pointer group"
-        onClick={handleHomeClick}
+      <button
+        onClick={() => window.location.href = "/"}
+        className={`hidden md:block text-[15px] font-bold tracking-[0.3em] uppercase transition-colors duration-500 ${text}`}
       >
-        <span 
-          className="text-[11px] font-bold tracking-[0.3em] uppercase hidden md:block"
-          style={{ color: activeColor, transition: "color 0.5s ease" }}
-        >
-          Marek Janásek
-        </span>
-      </div>
+        Marek Janásek
+      </button>
 
-      {/* Center Navigation */}
-      <div className="absolute left-1/2 -translate-x-1/2 flex gap-10">
-        {["home", "projects", "contact"].map((page) => (
+      <div className="absolute left-1/2 -translate-x-1/2 flex gap-3 md:gap-8">
+        {navKeys.map((key) => (
           <button
-            key={page}
-            onClick={() => {
-              if (window.location.pathname !== "/") {
-                window.location.href = "/"; // Redirect home first if on a subpage
-              } else {
-                setCurrentPage(page);
-              }
-            }}
-            className="text-[10px] uppercase tracking-[0.25em] font-bold transition-colors duration-500"
-            style={{
-              color: currentPage === page ? activeColor : mutedColor,
-            }}
-            onMouseEnter={(e) => (e.target.style.color = activeColor)}
-            onMouseLeave={(e) => (e.target.style.color = currentPage === page ? activeColor : mutedColor)}
+            key={key}
+            onClick={() => handleNavClick(key)}
+            className={`text-[9px] md:text-[13px] uppercase tracking-[0.15em] md:tracking-[0.25em] font-bold transition-colors duration-500
+              ${currentPage === key ? text : muted}
+              hover:${text}`}
           >
-            {page}
+            {labels[lang][key]}
           </button>
         ))}
       </div>
 
-      {/* Right Side Controls */}
       <div className="flex items-center gap-6">
-        <button 
+        <button
           onClick={() => setLang(lang === "EN" ? "CZ" : "EN")}
-          className="text-[10px] font-bold tracking-tighter w-6 transition-colors duration-500"
-          style={{ color: subtleColor }}
-          onMouseEnter={(e) => (e.target.style.color = activeColor)}
-          onMouseLeave={(e) => (e.target.style.color = subtleColor)}
+          className={`text-[14px] font-bold tracking-tighter w-6 transition-colors duration-500 ${subtle} hover:${text}`}
         >
           {lang}
         </button>
 
-        <button 
+        <button
           onClick={() => setIsDark(!isDark)}
-          className="transition-colors duration-500"
-          style={{ color: subtleColor }}
-          onMouseEnter={(e) => (e.target.style.color = activeColor)}
-          onMouseLeave={(e) => (e.target.style.color = subtleColor)}
+          className={`transition-colors duration-500 ${subtle} hover:${text}`}
           aria-label="Toggle theme"
         >
           {isDark ? <Sun size={15} strokeWidth={2.5} /> : <Moon size={15} strokeWidth={2.5} />}

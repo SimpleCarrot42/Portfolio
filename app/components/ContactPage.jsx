@@ -6,7 +6,6 @@ import { Mail, Github, Linkedin } from "lucide-react";
 
 const ease = [0.16, 1, 0.3, 1];
 
-// 1. Translation Dictionary
 const translations = {
   EN: {
     titleTop: "Let's Create",
@@ -20,7 +19,10 @@ const translations = {
     msgLabel: "Message",
     msgPlaceholder: "Tell me about your project...",
     btnSend: "Send Message",
+    btnSending: "Sending...",
     availability: "Available for Freelance Projects",
+    success: "Success! Your message has been sent.",
+    error: "Something went wrong. Please try again."
   },
   CZ: {
     titleTop: "Pojďme tvořit",
@@ -34,23 +36,43 @@ const translations = {
     msgLabel: "Zpráva",
     msgPlaceholder: "Řekněte mi o svém projektu...",
     btnSend: "Odeslat zprávu",
+    btnSending: "Odesílám...",
     availability: "Dostupný pro spolupráci",
+    success: "Úspěch! Vaše zpráva byla odeslána.",
+    error: "Něco se nepovedlo. Zkuste to prosím znovu."
   }
 };
 
 export default function ContactPage({ lang, isDark }) {
   const t = translations[lang] || translations.EN;
   
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formState, setFormState] = useState({
     name: "",
     email: "",
     message: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formState);
-  };
+    setIsSubmitting(true);
+
+    // Prepare data for Web3Forms
+    const formData = new FormData();
+    formData.append("access_key", "5c196dab-86f5-4d55-82b6-b7828af2ae9e");
+    formData.append("name", formState.name);
+    formData.append("email", formState.email);
+    formData.append("message", formState.message);
+
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+    }
+
 
   return (
     <div className={`min-h-screen pt-32 px-6 md:px-12 lg:px-20 pb-20 transition-colors duration-500 ${isDark ? 'bg-[#0a0a0a] text-white' : 'bg-white text-black'}`}>
@@ -98,7 +120,9 @@ export default function ContactPage({ lang, isDark }) {
 
           <div className="flex gap-6">
             <motion.a
-              href="#"
+              href="https://github.com/SimpleCarrot42"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ scale: 1.1, rotate: 5 }}
               className={`flex-1 p-8 rounded-3xl border-2 flex items-center justify-center transition-colors ${
                 isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-black/5 text-black'
@@ -107,7 +131,9 @@ export default function ContactPage({ lang, isDark }) {
               <Github size={32} />
             </motion.a>
             <motion.a
-              href="#"
+              href="https://www.linkedin.com/in/marek-jan%C3%A1sek-299a1b399/"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ scale: 1.1, rotate: -5 }}
               className="flex-1 p-8 rounded-3xl bg-gradient-to-br from-orange-500 to-red-600 text-white flex items-center justify-center shadow-lg shadow-orange-500/20"
             >
@@ -135,6 +161,8 @@ export default function ContactPage({ lang, isDark }) {
               </label>
               <input
                 type="text"
+                required
+                name="name"
                 value={formState.name}
                 onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                 className={`w-full px-6 py-4 rounded-2xl border transition-all focus:border-orange-500 outline-none ${
@@ -150,6 +178,8 @@ export default function ContactPage({ lang, isDark }) {
               </label>
               <input
                 type="email"
+                required
+                name="email"
                 value={formState.email}
                 onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                 className={`w-full px-6 py-4 rounded-2xl border transition-all focus:border-orange-500 outline-none ${
@@ -164,6 +194,8 @@ export default function ContactPage({ lang, isDark }) {
                 {t.msgLabel}
               </label>
               <textarea
+                required
+                name="message"
                 value={formState.message}
                 onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                 rows={6}
@@ -175,12 +207,13 @@ export default function ContactPage({ lang, isDark }) {
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+              whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
               type="submit"
-              className="w-full py-5 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 text-white rounded-2xl font-bold uppercase tracking-widest shadow-lg shadow-orange-500/30"
+              disabled={isSubmitting}
+              className={`w-full py-5 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 text-white rounded-2xl font-bold uppercase tracking-widest shadow-lg shadow-orange-500/30 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
-              {t.btnSend}
+              {isSubmitting ? t.btnSending : t.btnSend}
             </motion.button>
           </div>
         </motion.form>

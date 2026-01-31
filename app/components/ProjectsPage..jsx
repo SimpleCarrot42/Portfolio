@@ -8,14 +8,14 @@ const ease = [0.16, 1, 0.3, 1];
 const translations = {
   EN: {
     archive: "Archive // Full Collection",
-    selected: "Selected",
+    selected: "All",
     works: "Works",
     viewDetail: "View",
     detailDesc: "Project Detail",
   },
   CZ: {
     archive: "Archiv // Kompletní sbírka",
-    selected: "Vybrané",
+    selected: "Všechny",
     works: "Práce",
     viewDetail: "Zobrazit",
     detailDesc: "Detailní popis",
@@ -55,7 +55,7 @@ export default function ProjectsPage({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease }}
-            className="text-[10px] uppercase tracking-[0.3em] font-bold mb-6 flex items-center gap-2 opacity-40"
+            className="text-[10px] uppercase tracking-[0.6em] font-bold mb-6 flex items-center gap-3 opacity-40"
           >
             <Sparkles size={12} className="text-orange-600" />
             {t.archive}

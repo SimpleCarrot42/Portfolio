@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { ArrowUpRight, Globe, Cpu, Smartphone, Sparkles, Zap } from "lucide-react";
+import { ArrowUpRight, Sparkles, Zap } from "lucide-react";
 
 const ease = [0.16, 1, 0.3, 1];
 
@@ -13,11 +13,6 @@ const translations = {
     heroBtn2: "Contact Me",
     recentTitle: "Recent Projects",
     scrollHint: "Scroll horizontally to explore",
-    aboutTitle: "I'm Marek Janasek — a developer focused on building modern web experiences.",
-    aboutSub: "I specialize in frontend architecture, animation-driven interfaces, and systems built with clarity.",
-    card1: "Engineering",
-    card2: "Design Systems",
-    card3: "Platforms"
   },
   CZ: {
     heroSub: "Přehled všech mých projektů a experimentů. Dokumentace projektů a mnohem víc.",
@@ -25,11 +20,6 @@ const translations = {
     heroBtn2: "Kontaktujte mě",
     recentTitle: "Nedávné projekty",
     scrollHint: "Prozkoumejte posunutím do strany",
-    aboutTitle: "Jsem Marek Janásek — vývojář zaměřený na tvorbu moderních webových zážitků.",
-    aboutSub: "Specializuji se na frontend architekturu, rozhraní poháněná animacemi a systémy stavěné s jasným úmyslem.",
-    card1: "Inženýrství",
-    card2: "Designové systémy",
-    card3: "Platformy"
   }
 };
 
@@ -45,11 +35,13 @@ export default function HomePage({ setCurrentPage, lang, isDark, allProjects }) 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-  const featuredProjects = allProjects?.slice(0, 5) || [];
+  // Filter for Pinned projects only
+  const featuredProjects = allProjects?.filter(p => p.pinned === true) || [];
 
   return (
     <div className={`min-h-screen transition-colors duration-500 ${isDark ? 'bg-[#0a0a0a] text-white' : 'bg-white text-black'}`}>
-      {/* HERO */}
+      
+      {/* HERO SECTION */}
       <motion.header
         ref={heroRef}
         style={{ y, opacity }}
@@ -115,7 +107,7 @@ export default function HomePage({ setCurrentPage, lang, isDark, allProjects }) 
         </motion.div>
       </motion.header>
 
-      {/* PINNED PROJECTS */}
+      {/* PINNED PROJECTS SECTION */}
       <section className="py-20 md:py-32 px-6 md:px-12 lg:px-20 overflow-hidden">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -134,12 +126,9 @@ export default function HomePage({ setCurrentPage, lang, isDark, allProjects }) 
         <div className="relative">
           <div className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide">
             {featuredProjects.map((project, index) => {
-              // 🛠️ FIX: Safely extract translated description and year key
               const descriptionText = typeof project.description === 'object' 
                 ? (project.description[lang] || project.description.EN) 
                 : project.description;
-              
-              const projectYear = project.year; // Changed from project_year
 
               return (
                 <motion.div
@@ -151,13 +140,13 @@ export default function HomePage({ setCurrentPage, lang, isDark, allProjects }) 
                   className="min-w-[85vw] md:min-w-[500px] snap-center"
                 >
                   <div
-                    onClick={() => setCurrentPage("projects")}
+                    onClick={() => window.location.href = `/projects/${project.slug}`}
                     className={`group relative rounded-[2.5rem] border p-10 md:p-12 h-[450px] flex flex-col justify-between cursor-pointer overflow-hidden transition-all duration-500 hover:-translate-y-2 ${
                       isDark ? 'bg-white/5 border-white/10' : 'bg-[#f9f9f9] border-black/5'
                     }`}
                   >
                     <div className="absolute -bottom-4 -right-4 text-[10rem] font-black opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-700 pointer-events-none">
-                      {projectYear}
+                      {project.year}
                     </div>
 
                     <div className="flex justify-between items-start z-10">
@@ -197,44 +186,6 @@ export default function HomePage({ setCurrentPage, lang, isDark, allProjects }) 
             {t.scrollHint}
           </div>
         </div>
-      </section>
-
-      {/* ABOUT SECTION */}
-      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-20 max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease }}
-        >
-          <h2 className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-40 mb-6">About</h2>
-          <p className="text-3xl md:text-5xl font-medium leading-tight mb-8">
-            {t.aboutTitle}
-          </p>
-          <p className="opacity-60 text-lg max-w-3xl mb-12">
-            {t.aboutSub}
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
-            <div className={`rounded-3xl p-8 transition-all hover:-translate-y-2 ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}>
-              <Cpu className="mb-6 opacity-70" size={32} />
-              <h3 className="font-bold text-lg mb-2">{t.card1}</h3>
-              <p className="font-mono text-[10px] tracking-widest opacity-60">NEXT.JS / TURSO / DRIZZLE</p>
-            </div>
-
-            <div className="rounded-3xl bg-gradient-to-br from-orange-500 to-red-600 text-white p-8 transition-all hover:-translate-y-2 shadow-xl shadow-orange-500/20">
-              <Smartphone className="mb-6 opacity-90" size={32} />
-              <h3 className="font-bold text-lg mb-2">{t.card2}</h3>
-              <p className="font-mono text-[10px] tracking-widest opacity-80">FRAMER MOTION / TAILWIND</p>
-            </div>
-
-            <div className={`rounded-3xl border-2 p-8 transition-all hover:-translate-y-2 ${isDark ? 'border-white/10 bg-white/5' : 'border-black/10 bg-black/5'}`}>
-              <Globe className="mb-6 opacity-60" size={32} />
-              <h3 className="font-bold text-lg mb-2">{t.card3}</h3>
-              <p className="font-mono text-[10px] tracking-widest opacity-60">WEB PLATFORMS / TOOLS</p>
-            </div>
-          </div>
-        </motion.div>
       </section>
     </div>
   );
