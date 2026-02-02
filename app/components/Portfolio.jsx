@@ -6,21 +6,27 @@ import { ArrowRight, Sparkles, ImageOff } from "lucide-react";
 const ease = [0.16, 1, 0.3, 1];
 
 export default function ProjectsPage({ allProjects = [], lang = "EN", isDark = true }) {
-  // Only show pinned projects
-  const pinnedProjects = allProjects.filter(project => project.pinned === true);
+  
+  // 1. Sort projects: Pinned ones go to the top, others follow
+  const sortedProjects = [...allProjects].sort((a, b) => {
+    if (a.pinned === b.pinned) return 0;
+    return a.pinned ? -1 : 1;
+  });
 
   const t = {
     EN: { 
       archive: "Archive // Full Collection", 
       works: "Works", 
       detail: "View Detail",
-      pending: "No visual"
+      pending: "No visual",
+      featured: "Pinned"
     },
     CZ: { 
       archive: "Archiv // Kompletní sbírka", 
       works: "Práce", 
       detail: "Zobrazit Detail",
-      pending: "Bez náhledu"
+      pending: "Bez náhledu",
+      featured: "Připnuté"
     }
   };
 
@@ -43,7 +49,7 @@ export default function ProjectsPage({ allProjects = [], lang = "EN", isDark = t
 
         {/* PROJECTS LIST */}
         <div className="flex flex-col gap-64">
-          {pinnedProjects.map((project, index) => {
+          {sortedProjects.map((project, index) => {
             const isEven = index % 2 === 0;
             return (
               <motion.div 
@@ -57,7 +63,13 @@ export default function ProjectsPage({ allProjects = [], lang = "EN", isDark = t
                 <div className="w-full lg:w-3/5 group cursor-pointer" onClick={() => window.location.href = `/projects/${project.slug}`}>
                   <div className={`relative w-full aspect-[16/10] rounded-3xl flex items-center justify-center p-12 transition-all duration-700 group-hover:scale-[1.02] ${isDark ? "bg-neutral-900" : "bg-neutral-100"}`}>
                     
-                    {/* Check if image path exists and isn't an empty string */}
+                    {/* Badge for Pinned Projects */}
+                    {project.pinned && (
+                      <div className="absolute top-6 left-6 z-10 flex items-center gap-2 px-3 py-1 rounded-full bg-orange-600 text-[8px] font-bold uppercase tracking-widest text-white">
+                        <Sparkles size={10} /> {labels.featured}
+                      </div>
+                    )}
+
                     {project.image && project.image.trim() !== "" ? (
                       <img 
                         src={project.image} 
@@ -65,13 +77,11 @@ export default function ProjectsPage({ allProjects = [], lang = "EN", isDark = t
                         className="max-w-full max-h-full object-contain" 
                       />
                     ) : (
-                      /* Stylized Placeholder when image is missing */
                       <div className="flex flex-col items-center gap-4 text-center">
                         <div className="w-16 h-16 rounded-full bg-orange-600/10 flex items-center justify-center">
                           <ImageOff size={32} className="text-orange-600 opacity-40" />
                         </div>
                         <p className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-30">{labels.pending}</p>
-                        {/* Decorative background grid for the empty state */}
                         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
                              style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '30px 30px' }} 
                         />

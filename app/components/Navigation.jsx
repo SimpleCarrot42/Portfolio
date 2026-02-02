@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 
@@ -14,41 +15,67 @@ export default function Navigation({
   setLang,
   forceBlack = false,
 }) {
+  
+  // --- 1. THE AUTO-SCROLL LOGIC ---
+  useEffect(() => {
+    const handleInitialScroll = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (hash) {
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+            setCurrentPage(hash);
+          }
+        }, 100); 
+      }
+    };
+
+    handleInitialScroll();
+    window.addEventListener("hashchange", handleInitialScroll);
+    return () => window.removeEventListener("hashchange", handleInitialScroll);
+  }, [setCurrentPage]);
+
+  // --- 2. STYLING ---
   const text = forceBlack ? "text-black" : isDark ? "text-white" : "text-black";
   const muted = forceBlack ? "text-black/40" : isDark ? "text-white/40" : "text-black/40";
   const subtle = forceBlack ? "text-black/50" : isDark ? "text-white/50" : "text-black/50";
 
+  // --- 3. UPDATED LABELS & KEYS ---
   const labels = {
-    EN: { home: "home", portfolio: "portfolio", projects: "projects", about: "about", contact: "contact" },
-    CZ: { home: "domů", portfolio: "portfolio", projects: "projekty", about: "o mně", contact: "kontakt" },
+    EN: { home: "home", projects: "projects", blog: "blog", about: "about", contact: "contact" },
+    CZ: { home: "domů", projects: "projekty", blog: "blog", about: "o mně", contact: "kontakt" },
   };
 
-  const navKeys = ["home", "portfolio", "projects", "about", "contact"];
+  const navKeys = ["home", "projects", "blog", "about", "contact"];
 
+  // --- 4. THE UPDATED CLICK HANDLER ---
   const handleNavClick = (key) => {
-    // 1. HARD REDIRECTS (Separate URLs)
-    if (key === "portfolio") {
-      window.location.href = "/portfolio";
-      return;
-    }
-    if (key === "about") {
-      window.location.href = "/about";
-      return;
-    }
-    if (key === "home") {
-      window.location.href = "/";
-      return;
-    }
-
-    // 2. STATE-BASED SCROLLING (Elements on the Home Page)
-    if (window.location.pathname !== "/") {
-      // If user is on /portfolio or /about, they must go home first to see these sections
-      window.location.href = `/#${key}`;
-    } else {
-      // If already on home, just update state to trigger scroll
-      setCurrentPage(key);
-    }
+  const routes = {
+    projects: "/projectspage",    // The folder name you renamed
+    blog: "/blog",      // The specific blog URL
+    about: "/about"
   };
+  
+  if (key === "home") {
+    window.location.href = "/";
+    return;
+  }
+
+  if (routes[key]) {
+    window.location.href = routes[key];
+    return;
+  }
+
+  // If already on Home, scroll. If not, go Home + Hash.
+  if (window.location.pathname !== "/") {
+    window.location.href = `/#${key}`;
+  } else {
+    setCurrentPage(key);
+    document.getElementById(key)?.scrollIntoView({ behavior: "smooth" });
+    window.history.pushState(null, "", `#${key}`);
+  }
+};
 
   return (
     <motion.nav
@@ -58,7 +85,7 @@ export default function Navigation({
       className="fixed top-0 left-0 w-full p-6 md:px-12 flex justify-between items-center z-[100] backdrop-blur-sm transition-colors duration-500"
     >
       <button
-        onClick={() => window.location.href = "/"}
+        onClick={() => handleNavClick("home")}
         className={`hidden md:block text-[15px] font-bold tracking-[0.3em] uppercase transition-colors duration-500 ${text}`}
       >
         Marek Janásek

@@ -37,7 +37,7 @@ export const projects = [
       EN: "Monitors BL RSSI and automatically locks host if out of range",
       CZ: "Skript měří Bluetooth RSSI a automaticky zamkne počítač při ztrátě dosahu."
     },
-    image: "",
+    image: null,
     year: "2025",
     tags: ["Python", "Bluetooth", "Security"],
   },
@@ -54,5 +54,19 @@ export const projects = [
     image: "/images/projects/4.png",
     year: "2024",
     tags: ["HTML", "CSS", "JS"],
+  },
+  {
+    id: "05",
+    slug: "utility-bot",
+    title: "Mineflayer Utility Bot",
+    pinned: true,
+    category: { EN: "Automation & Robotics", CZ: "Automatizace a Robotika" },
+    description: {
+      EN: "Multi-functional Minecraft bot capable of pathfinding, ore detection, and automated combat.",
+      CZ: "Multifunkční Minecraft bot schopný hledání cesty, detekce rud a automatizovaného boje."
+    },
+    image: "/images/projects/5.png",
+    year: "2026",
+    tags: ["Node.js", "Mineflayer", "Pathfinding"],
   }
 ];
