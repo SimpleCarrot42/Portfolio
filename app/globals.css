@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+
+
 :root {
   --bg: #fbfbfb;
   --fg: #0f0f0f;
@@ -19,6 +21,7 @@ body {
   font-feature-settings: "ss01";
   transition: background-color 0.5s ease, color 0.5s ease;
 }
+
 
 
 /* Subtle grain texture – optional but premium */

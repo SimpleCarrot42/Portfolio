@@ -43,7 +43,7 @@ const translations = {
   }
 };
 
-export default function ContactPage({ lang, isDark }) {
+export default function ContactPage({ lang }) {
   const t = translations[lang] || translations.EN;
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,25 +57,30 @@ export default function ContactPage({ lang, isDark }) {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Prepare data for Web3Forms
     const formData = new FormData();
     formData.append("access_key", "5c196dab-86f5-4d55-82b6-b7828af2ae9e");
     formData.append("name", formState.name);
     formData.append("email", formState.email);
     formData.append("message", formState.message);
 
-
+    try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formData
       });
-
       const data = await response.json();
+      if(data.success) {
+        setFormState({ name: "", email: "", message: "" });
+      }
+    } catch (error) {
+      console.error("Error submitting form", error);
+    } finally {
+      setIsSubmitting(false);
     }
-
+  };
 
   return (
-    <div className={`min-h-screen pt-32 px-6 md:px-12 lg:px-20 pb-20 transition-colors duration-500 ${isDark ? 'bg-[#0a0a0a] text-white' : 'bg-white text-black'}`}>
+    <div className="min-h-screen pt-32 px-6 md:px-12 lg:px-20 pb-20 bg-white text-black transition-colors duration-500">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -95,7 +100,7 @@ export default function ContactPage({ lang, isDark }) {
               {t.titleBottom}
             </span>
           </motion.h1>
-          <p className={`text-xl transition-opacity ${isDark ? 'text-white/60' : 'text-black/60'}`}>
+          <p className="text-xl text-black/60">
             {t.subTitle}
           </p>
         </div>
@@ -105,9 +110,7 @@ export default function ContactPage({ lang, isDark }) {
           <motion.a
             href="mailto:marek@example.com"
             whileHover={{ scale: 1.05, y: -4 }}
-            className={`p-8 rounded-3xl flex items-center gap-4 shadow-lg transition-colors ${
-              isDark ? 'bg-white text-black shadow-white/5' : 'bg-black text-white shadow-black/10'
-            }`}
+            className="p-8 rounded-3xl flex items-center gap-4 bg-black text-white shadow-xl shadow-black/10 transition-all"
           >
             <Mail size={32} />
             <div>
@@ -124,9 +127,7 @@ export default function ContactPage({ lang, isDark }) {
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.1, rotate: 5 }}
-              className={`flex-1 p-8 rounded-3xl border-2 flex items-center justify-center transition-colors ${
-                isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-black/5 text-black'
-              }`}
+              className="flex-1 p-8 rounded-3xl border-2 bg-white border-black/5 text-black hover:border-black/20 shadow-sm transition-all"
             >
               <Github size={32} />
             </motion.a>
@@ -148,15 +149,13 @@ export default function ContactPage({ lang, isDark }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8, ease }}
           onSubmit={handleSubmit}
-          className={`rounded-[2.5rem] border p-10 md:p-12 shadow-xl transition-colors ${
-            isDark ? 'bg-white/5 border-white/10 shadow-black/20' : 'bg-white border-black/5 shadow-black/5'
-          }`}
+          className="rounded-[2.5rem] border border-black/5 bg-white p-10 md:p-12 shadow-2xl shadow-black/5"
         >
-          <h2 className="text-2xl font-bold mb-8 uppercase tracking-tight">{t.formTitle}</h2>
+          <h2 className="text-2xl font-bold mb-8 uppercase tracking-tight text-black">{t.formTitle}</h2>
 
           <div className="space-y-6">
             <div>
-              <label className={`block text-[10px] font-bold mb-2 uppercase tracking-[0.2em] ${isDark ? 'text-white/40' : 'text-black/40'}`}>
+              <label className="block text-[10px] font-bold mb-2 uppercase tracking-[0.2em] text-black/40">
                 {t.nameLabel}
               </label>
               <input
@@ -165,15 +164,13 @@ export default function ContactPage({ lang, isDark }) {
                 name="name"
                 value={formState.name}
                 onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                className={`w-full px-6 py-4 rounded-2xl border transition-all focus:border-orange-500 outline-none ${
-                  isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-black/5 border-black/5 text-black'
-                }`}
+                className="w-full px-6 py-4 rounded-2xl border border-black/5 bg-black/5 text-black transition-all focus:border-orange-500 focus:bg-white outline-none"
                 placeholder={t.namePlaceholder}
               />
             </div>
 
             <div>
-              <label className={`block text-[10px] font-bold mb-2 uppercase tracking-[0.2em] ${isDark ? 'text-white/40' : 'text-black/40'}`}>
+              <label className="block text-[10px] font-bold mb-2 uppercase tracking-[0.2em] text-black/40">
                 {t.emailLabel}
               </label>
               <input
@@ -182,15 +179,13 @@ export default function ContactPage({ lang, isDark }) {
                 name="email"
                 value={formState.email}
                 onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                className={`w-full px-6 py-4 rounded-2xl border transition-all focus:border-orange-500 outline-none ${
-                  isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-black/5 border-black/5 text-black'
-                }`}
+                className="w-full px-6 py-4 rounded-2xl border border-black/5 bg-black/5 text-black transition-all focus:border-orange-500 focus:bg-white outline-none"
                 placeholder={t.emailPlaceholder}
               />
             </div>
 
             <div>
-              <label className={`block text-[10px] font-bold mb-2 uppercase tracking-[0.2em] ${isDark ? 'text-white/40' : 'text-black/40'}`}>
+              <label className="block text-[10px] font-bold mb-2 uppercase tracking-[0.2em] text-black/40">
                 {t.msgLabel}
               </label>
               <textarea
@@ -199,9 +194,7 @@ export default function ContactPage({ lang, isDark }) {
                 value={formState.message}
                 onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                 rows={6}
-                className={`w-full px-6 py-4 rounded-2xl border transition-all focus:border-orange-500 outline-none resize-none ${
-                  isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-black/5 border-black/5 text-black'
-                }`}
+                className="w-full px-6 py-4 rounded-2xl border border-black/5 bg-black/5 text-black transition-all focus:border-orange-500 focus:bg-white outline-none resize-none"
                 placeholder={t.msgPlaceholder}
               />
             </div>
@@ -225,9 +218,7 @@ export default function ContactPage({ lang, isDark }) {
           transition={{ delay: 0.5, duration: 0.8, ease }}
           className="mt-12 text-center"
         >
-          <div className={`inline-flex items-center gap-2 px-6 py-3 rounded-full border ${
-            isDark ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-green-50 border-green-200 text-green-700'
-          }`}>
+          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full border bg-green-50 border-green-200 text-green-700">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             <span className="text-xs font-bold uppercase tracking-widest">
               {t.availability}

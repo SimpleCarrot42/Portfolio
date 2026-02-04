@@ -21,7 +21,7 @@ export default function GoDrivePage() {
     <ProjectDetailPage 
       project={project} 
       isDark={true} 
-      lang="EN" 
+      lang="CZ" 
     />
   );
 }

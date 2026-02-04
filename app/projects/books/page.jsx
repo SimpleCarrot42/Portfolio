@@ -25,7 +25,7 @@ export default function ProjectPage() {
     <ProjectDetailPage 
       project={project} 
       isDark={true} 
-      lang="EN" 
+      lang="CZ" 
     />
   );
 }

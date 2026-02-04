@@ -1,22 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
-import { motion } from "framer-motion";
-import { Sun, Moon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
 
 const ease = [0.16, 1, 0.3, 1];
 
 export default function Navigation({
   currentPage,
   setCurrentPage,
-  isDark,
-  setIsDark,
-  lang,
-  setLang,
-  forceBlack = false,
 }) {
-  
-  // --- 1. THE AUTO-SCROLL LOGIC ---
+  const [isOpen, setIsOpen] = useState(false);
+
+  // --- 1. THE AUTO-SCROLL LOGIC (Preserved) ---
   useEffect(() => {
     const handleInitialScroll = () => {
       const hash = window.location.hash.replace("#", "");
@@ -27,7 +23,7 @@ export default function Navigation({
             element.scrollIntoView({ behavior: "smooth" });
             setCurrentPage(hash);
           }
-        }, 100); 
+        }, 100);
       }
     };
 
@@ -36,91 +32,118 @@ export default function Navigation({
     return () => window.removeEventListener("hashchange", handleInitialScroll);
   }, [setCurrentPage]);
 
-  // --- 2. STYLING ---
-  const text = forceBlack ? "text-black" : isDark ? "text-white" : "text-black";
-  const muted = forceBlack ? "text-black/40" : isDark ? "text-white/40" : "text-black/40";
-  const subtle = forceBlack ? "text-black/50" : isDark ? "text-white/50" : "text-black/50";
-
-  // --- 3. UPDATED LABELS & KEYS ---
-  const labels = {
-    EN: { home: "home", projects: "projects", blog: "blog", about: "about", contact: "contact" },
-    CZ: { home: "domů", projects: "projekty", blog: "blog", about: "o mně", contact: "kontakt" },
-  };
-
+  // --- 2. PERMANENT LABELS (Czech) ---
+  const labels = { home: "domů", projects: "projekty", blog: "blog", about: "o mně", contact: "kontakt" };
   const navKeys = ["home", "projects", "blog", "about", "contact"];
 
-  // --- 4. THE UPDATED CLICK HANDLER ---
+  // --- 3. CLICK HANDLER ---
   const handleNavClick = (key) => {
-  const routes = {
-    projects: "/projectspage",    // The folder name you renamed
-    blog: "/blog",      // The specific blog URL
-    about: "/about"
+    setIsOpen(false); 
+    const routes = {
+      projects: "/projectspage",
+      blog: "/blog",
+      about: "/about"
+    };
+
+    if (key === "home") {
+      window.location.href = "/";
+      return;
+    }
+
+    if (routes[key]) {
+      window.location.href = routes[key];
+      return;
+    }
+
+    if (window.location.pathname !== "/") {
+      window.location.href = `/#${key}`;
+    } else {
+      setCurrentPage(key);
+      document.getElementById(key)?.scrollIntoView({ behavior: "smooth" });
+      window.history.pushState(null, "", `#${key}`);
+    }
   };
-  
-  if (key === "home") {
-    window.location.href = "/";
-    return;
-  }
-
-  if (routes[key]) {
-    window.location.href = routes[key];
-    return;
-  }
-
-  // If already on Home, scroll. If not, go Home + Hash.
-  if (window.location.pathname !== "/") {
-    window.location.href = `/#${key}`;
-  } else {
-    setCurrentPage(key);
-    document.getElementById(key)?.scrollIntoView({ behavior: "smooth" });
-    window.history.pushState(null, "", `#${key}`);
-  }
-};
 
   return (
-    <motion.nav
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease }}
-      className="fixed top-0 left-0 w-full p-6 md:px-12 flex justify-between items-center z-[100] backdrop-blur-sm transition-colors duration-500"
-    >
-      <button
-        onClick={() => handleNavClick("home")}
-        className={`hidden md:block text-[15px] font-bold tracking-[0.3em] uppercase transition-colors duration-500 ${text}`}
+    <>
+      <motion.nav
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease }}
+        /* HARDCODED: Light background and black text */
+        className="fixed top-0 left-0 w-full p-6 md:px-12 flex justify-between items-center z-[110] bg-white/80 backdrop-blur-md border-b border-black/5"
       >
-        Marek Janásek
-      </button>
-
-      <div className="absolute left-1/2 -translate-x-1/2 flex gap-3 md:gap-8">
-        {navKeys.map((key) => (
-          <button
-            key={key}
-            onClick={() => handleNavClick(key)}
-            className={`text-[9px] md:text-[13px] uppercase tracking-[0.15em] md:tracking-[0.25em] font-bold transition-colors duration-500
-              ${currentPage === key ? text : muted}
-              hover:${text}`}
-          >
-            {labels[lang][key]}
-          </button>
-        ))}
-      </div>
-
-      <div className="flex items-center gap-6">
+        {/* Logo - Permanent Black */}
         <button
-          onClick={() => setLang(lang === "EN" ? "CZ" : "EN")}
-          className={`text-[14px] font-bold tracking-tighter w-6 transition-colors duration-500 ${subtle} hover:${text}`}
+          onClick={() => handleNavClick("home")}
+          className="text-[15px] font-bold tracking-[0.3em] uppercase text-black hover:text-orange-600 transition-colors"
         >
-          {lang}
+          Marek Janásek
         </button>
 
-        <button
-          onClick={() => setIsDark(!isDark)}
-          className={`transition-colors duration-500 ${subtle} hover:${text}`}
-          aria-label="Toggle theme"
+        {/* Desktop Links - Permanent Black */}
+        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-8">
+          {navKeys.map((key) => (
+            <button
+              key={key}
+              onClick={() => handleNavClick(key)}
+              className={`text-[11px] uppercase tracking-[0.25em] font-bold transition-all duration-300
+                ${currentPage === key ? "text-black" : "text-black/30"}
+                hover:text-black hover:tracking-[0.35em]`}
+            >
+              {labels[key]}
+            </button>
+          ))}
+        </div>
+
+        {/* Burger Button - Permanent Black */}
+        <button 
+          className="md:hidden text-black p-2 hover:bg-black/5 rounded-full transition-colors"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
         >
-          {isDark ? <Sun size={15} strokeWidth={2.5} /> : <Moon size={15} strokeWidth={2.5} />}
+          {isOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
-      </div>
-    </motion.nav>
+      </motion.nav>
+
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop click-to-close */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[105]"
+            />
+            
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.5, ease }}
+              className="fixed top-0 right-0 h-full w-[80%] bg-white z-[120] flex flex-col pt-32 px-12 gap-8 shadow-2xl"
+            >
+              {navKeys.map((key) => (
+                <button
+                  key={key}
+                  onClick={() => handleNavClick(key)}
+                  className={`text-[24px] text-left uppercase tracking-[0.1em] font-bold transition-all
+                    ${currentPage === key ? "text-orange-600" : "text-black/40 hover:text-black"}`}
+                >
+                  {labels[key]}
+                </button>
+              ))}
+              
+              <div className="mt-auto mb-12">
+                 <p className="text-[10px] uppercase tracking-widest font-bold opacity-20">© 2026 Marek Janásek</p>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

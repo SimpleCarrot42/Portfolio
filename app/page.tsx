@@ -12,7 +12,7 @@ import { projects as jsonProjects } from "./data/projects.js";
 export default function Portfolio() {
   const [currentPage, setCurrentPage] = useState("home");
   const [isDark, setIsDark] = useState(true); 
-  const [lang, setLang] = useState("EN");
+  const [lang, setLang] = useState("CZ");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

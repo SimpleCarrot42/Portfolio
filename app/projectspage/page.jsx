@@ -7,7 +7,7 @@ import { projects } from "../data/projects";
 
 export default function PortfolioRoute() {
   const [isDark, setIsDark] = useState(true);
-  const [lang, setLang] = useState("EN");
+  const [lang, setLang] = useState("CZ");
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {

@@ -11,19 +11,15 @@ import { projects as jsonProjects } from "./data/projects.js";
 
 export default function Portfolio() {
   const [currentPage, setCurrentPage] = useState("home");
-  const [isDark, setIsDark] = useState(true); 
-  const [lang, setLang] = useState("EN");
+  /* 1. FORCE STATE TO LIGHT & CZECH */
+  const [lang, setLang] = useState("CZ");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // 1. Sync Theme/Lang
-    const savedTheme = localStorage.getItem("theme");
+    // Sync Lang only - Theme is now permanently light
     const savedLang = localStorage.getItem("lang");
-    if (savedTheme) setIsDark(savedTheme === "dark");
-    else setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches);
     if (savedLang) setLang(savedLang);
     
-    // 2. Handle URL Hash on load
     const handleHash = () => {
       const hash = window.location.hash.replace("#", "");
       if (hash && ["home", "projects", "contact"].includes(hash)) {
@@ -38,29 +34,27 @@ export default function Portfolio() {
     return () => window.removeEventListener("hashchange", handleHash);
   }, []);
 
+  // Force light class on document for Tailwind
   useEffect(() => {
     if (!mounted) return;
-    document.documentElement.classList.toggle("dark", isDark);
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-  }, [isDark, mounted]);
+    document.documentElement.classList.remove("dark");
+    document.documentElement.classList.add("light");
+  }, [mounted]);
 
-  // VOILA: No flicker, no lag.
-  if (!mounted) return <div className="min-h-screen bg-white dark:bg-[#0a0a0a]" />;
+  // Prevent Flicker - Always start white
+  if (!mounted) return <div className="min-h-screen bg-white" />;
 
   return (
-    <div className={`min-h-screen flex flex-col transition-colors duration-700 ${
-      isDark ? "bg-[#0a0a0a] text-white" : "bg-white text-black"
-    }`}>
+    /* 2. REMOVED THE DYNAMIC BG LOGIC - HARDCODED bg-white */
+    <div className="min-h-screen flex flex-col bg-white text-black transition-none">
       <Navigation
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        isDark={isDark}
-        setIsDark={setIsDark}
         lang={lang}
         setLang={setLang}
       />
 
-      <div className="flex-grow pt-24">
+      <div className="flex-grow pt-24 bg-white">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentPage + lang}
@@ -68,21 +62,22 @@ export default function Portfolio() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
+            className="bg-white" /* 3. Force child wrapper white */
           >
             {currentPage === "home" && (
-              <HomePage setCurrentPage={setCurrentPage} lang={lang} isDark={isDark} allProjects={jsonProjects} />
+              <HomePage setCurrentPage={setCurrentPage} lang={lang} allProjects={jsonProjects} />
             )}
             {currentPage === "projects" && (
-              <ProjectsPage allProjects={jsonProjects} lang={lang} isDark={isDark} />
+              <ProjectsPage allProjects={jsonProjects} lang={lang} />
             )}
             {currentPage === "contact" && (
-              <ContactPage lang={lang} isDark={isDark} />
+              <ContactPage lang={lang} />
             )}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      <Footer isDark={isDark} />
+      <Footer />
     </div>
   );
 }

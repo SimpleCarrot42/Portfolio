@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   var dark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
                   if (dark) {
                     document.documentElement.classList.add('dark');
-                    document.documentElement.style.backgroundColor = '#0a0a0a';
+                    document.documentElement.style.backgroundColor = '#ffffffff';
                   } else {
                     document.documentElement.classList.remove('dark');
                     document.documentElement.style.backgroundColor = '#ffffff';

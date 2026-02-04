@@ -12,6 +12,7 @@ const translations = {
     works: "Works",
     viewDetail: "View",
     detailDesc: "Project Detail",
+    inDev: "In development",
   },
   CZ: {
     archive: "Archiv // Kompletní sbírka",
@@ -19,6 +20,7 @@ const translations = {
     works: "Práce",
     viewDetail: "Zobrazit",
     detailDesc: "Detailní popis",
+    inDev: "Ve vývoji",
   },
 };
 
@@ -29,11 +31,8 @@ export default function ProjectsPage({
 }) {
   const t = translations[lang] || translations.EN;
 
-  // 1. Function to handle URL change based on project slug
   const handleNavigation = (slug) => {
-    if (slug) {
-      window.location.href = `/projects/${slug}`;
-    }
+    if (slug) window.location.href = `/projects/${slug}`;
   };
 
   const getTranslation = (field) => {
@@ -80,12 +79,17 @@ export default function ProjectsPage({
           {allProjects.map((project, index) => {
             const isEven = index % 2 === 0;
 
+            // 🔒 DEFENSIVE: normalize in-development flag
+            const isInDev =
+              project.inDevelopment === true ||
+              project.inDevelopment === "true" ||
+              project.in_dev === true;
+
             return (
               <motion.div
                 key={project.id ?? index}
                 initial={index === 0 ? false : { opacity: 0, y: 60 }}
-                animate={index === 0 ? { opacity: 1, y: 0 } : undefined}
-                whileInView={index !== 0 ? { opacity: 1, y: 0 } : undefined}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.25 }}
                 transition={{ duration: 1, ease }}
                 className={`flex flex-col ${
@@ -100,25 +104,43 @@ export default function ProjectsPage({
                       px-6 md:px-10 lg:px-14 transition-all duration-500 hover:opacity-80
                       ${isDark ? "bg-neutral-900" : "bg-neutral-100"}`}
                   >
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="max-w-full max-h-full object-contain"
-                      draggable={false}
-                    />
+                    {project.image && (
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="max-w-full max-h-full object-contain"
+                        draggable={false}
+                      />
+                    )}
                   </button>
                 </div>
 
                 {/* TEXT */}
                 <div className="w-full lg:w-2/5">
-                  <div className="flex items-center gap-4 mb-4">
+                  {/* META */}
+                  <div className="flex items-center gap-4 mb-4 flex-wrap">
                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">
                       {String(index + 1).padStart(2, "0")}
                     </span>
+
                     <div className="h-px w-8 bg-orange-600/30" />
+
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-600">
                       {getTranslation(project.category)}
                     </span>
+
+                    {isInDev && (
+                      <span
+                        className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider border
+                          ${
+                            isDark
+                              ? "bg-orange-600/10 border-orange-600/40 text-orange-400"
+                              : "bg-orange-500/10 border-orange-500/40 text-orange-600"
+                          }`}
+                      >
+                        {t.inDev}
+                      </span>
+                    )}
                   </div>
 
                   <h2 className="text-4xl md:text-6xl font-bold mb-6">
@@ -184,10 +206,9 @@ export default function ProjectsPage({
           })}
         </div>
 
-        {/* 2. THE SLICK LINE (BOTTOM SEPARATOR) */}
-        <div 
-          className="w-full h-[1px] mt-64 opacity-10" 
-          style={{ backgroundColor: isDark ? "#ffffff" : "#000000" }} 
+        <div
+          className="w-full h-[1px] mt-64 opacity-10"
+          style={{ backgroundColor: isDark ? "#ffffff" : "#000000" }}
         />
       </div>
     </div>
