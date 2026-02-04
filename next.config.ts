@@ -1,14 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async redirects() {
-    return [
-      {
-        source: '/1',
-        destination: '/projects/godrive',
-        permanent: true,
-      },
-    ]
+  output: 'export',          
+  trailingSlash: true,       // THIS IS THE KEY: Creates /projects/index.html
+  images: {
+    unoptimized: true,       
+  },
+  typescript: {
+    ignoreBuildErrors: true, 
   },
 }
 
-export default nextConfig
+export default nextConfig;

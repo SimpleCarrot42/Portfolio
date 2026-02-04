@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 
 export default function NotFound() {
-  // Hardcoded to false/light for consistency
-  const [isDark] = useState(false);
   const [lang, setLang] = useState("EN");
 
   useEffect(() => {
@@ -23,18 +22,16 @@ export default function NotFound() {
   const currentT = lang === "CZ" ? t.CZ : t.EN;
 
   return (
-    // HARDCODED: bg-white text-black
     <div className="min-h-screen flex flex-col bg-white text-black selection:bg-orange-100">
       <Navigation 
         currentPage="" 
-        setCurrentPage={() => (window.location.href = "/")} 
+        setCurrentPage={() => {}} // No-op for 404
         lang={lang} 
         setLang={setLang} 
       />
 
       <main className="flex-grow flex flex-col items-center justify-center pt-24 px-6">
         <div className="max-w-2xl w-full text-center">
-          {/* THE 404 CAT */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -62,12 +59,11 @@ export default function NotFound() {
             {currentT.title}
           </p>
 
-          <button 
-            onClick={() => (window.location.href = "/")}
-            className="px-10 py-5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-black bg-black text-white hover:bg-orange-600 hover:border-orange-600 transition-all duration-300 shadow-lg shadow-black/10 active:scale-95"
-          >
-            {currentT.back}
-          </button>
+          <Link href="/">
+            <button className="px-10 py-5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-black bg-black text-white hover:bg-orange-600 hover:border-orange-600 transition-all duration-300 shadow-lg shadow-black/10 active:scale-95">
+              {currentT.back}
+            </button>
+          </Link>
         </div>
       </main>
 

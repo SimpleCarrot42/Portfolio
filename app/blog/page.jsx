@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Navigation from "../components/Navigation.jsx";
+import Navigation from "../components/Navigation.tsx";
 import AboutPage from "../components/BlogPage.jsx";
 
 export default function AboutRoute() {

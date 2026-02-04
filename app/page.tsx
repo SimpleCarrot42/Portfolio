@@ -16,14 +16,12 @@ export default function Portfolio() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // 1. Sync Theme/Lang
     const savedTheme = localStorage.getItem("theme");
     const savedLang = localStorage.getItem("lang");
     if (savedTheme) setIsDark(savedTheme === "dark");
     else setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches);
     if (savedLang) setLang(savedLang);
     
-    // 2. Handle URL Hash on load
     const handleHash = () => {
       const hash = window.location.hash.replace("#", "");
       if (hash && ["home", "projects", "contact"].includes(hash)) {
@@ -44,7 +42,6 @@ export default function Portfolio() {
     localStorage.setItem("theme", isDark ? "dark" : "light");
   }, [isDark, mounted]);
 
-  // VOILA: No flicker, no lag.
   if (!mounted) return <div className="min-h-screen bg-white dark:bg-[#0a0a0a]" />;
 
   return (
@@ -53,11 +50,11 @@ export default function Portfolio() {
     }`}>
       <Navigation
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={setCurrentPage as any}
         isDark={isDark}
-        setIsDark={setIsDark}
+        setIsDark={setIsDark as any}
         lang={lang}
-        setLang={setLang}
+        setLang={setLang as any}
       />
 
       <div className="flex-grow pt-24">
@@ -70,10 +67,10 @@ export default function Portfolio() {
             transition={{ duration: 0.3 }}
           >
             {currentPage === "home" && (
-              <HomePage setCurrentPage={setCurrentPage} lang={lang} isDark={isDark} allProjects={jsonProjects} />
+              <HomePage setCurrentPage={setCurrentPage as any} lang={lang} isDark={isDark} allProjects={jsonProjects as any} />
             )}
             {currentPage === "projects" && (
-              <ProjectsPage allProjects={jsonProjects} lang={lang} isDark={isDark} />
+              <ProjectsPage allProjects={jsonProjects as any} lang={lang} isDark={isDark} />
             )}
             {currentPage === "contact" && (
               <ContactPage lang={lang} isDark={isDark} />

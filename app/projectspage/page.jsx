@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Portfolio from "../components/Portfolio"; 
-import Navigation from "../components/Navigation.jsx";
+import Navigation from "../components/Navigation";
 import { projects } from "../data/projects";
 
 export default function PortfolioRoute() {
