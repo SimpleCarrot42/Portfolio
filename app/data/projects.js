@@ -91,7 +91,7 @@ export const projects = [
   },
   {
     id: "07",
-    slug: "vinradar",
+    slug: "vinrad",
     title: "vinarskyradar.cz",
     pinned: true,
     inDevelopment: true,

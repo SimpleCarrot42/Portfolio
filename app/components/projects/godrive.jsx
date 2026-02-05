@@ -90,7 +90,7 @@ const CodeBlock = ({ code, filename, isDark }) => {
 export default function GoDrivePage({ setCurrentPage }) {
   // State management for theme and language
   const [isDark, setIsDark] = useState(false);
-  const [lang, setLang] = useState("EN");
+  const [lang, setLang] = useState("CZ");
 
   const t = translations[lang] || translations.EN;
   const { scrollYProgress } = useScroll();

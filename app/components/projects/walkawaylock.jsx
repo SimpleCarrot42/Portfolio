@@ -87,7 +87,7 @@ const CodeBlock = ({ code, filename, isDark }) => {
 
 export default function ProjectPage({ setCurrentPage }) {
   const [isDark, setIsDark] = useState(false);
-  const [lang, setLang] = useState("EN");
+  const [lang, setLang] = useState("CZ");
 
   const t = translations[lang] || translations.EN;
   const { scrollYProgress } = useScroll();

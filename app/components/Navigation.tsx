@@ -1,89 +1,60 @@
 "use client";
 
-import { useEffect, useState, Dispatch, SetStateAction } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon } from "lucide-react"; // Added Sun/Moon for the future toggle
+import { Menu, X } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
 
-// 'as const' ensures TypeScript treats this as a fixed cubic-bezier tuple
 const ease = [0.16, 1, 0.3, 1] as const;
 
-// Comprehensive interface to handle all props passed from page.tsx and not-found.tsx
 interface NavigationProps {
   currentPage: string;
-  setCurrentPage: Dispatch<SetStateAction<string>> | ((page: string) => void);
-  lang: string;
-  setLang: Dispatch<SetStateAction<string>>;
-  isDark?: boolean;
-  setIsDark?: Dispatch<SetStateAction<boolean>>;
+  setCurrentPage: (page: string) => void;
 }
 
-export default function Navigation({
-  currentPage,
-  setCurrentPage,
-  lang,
-  setLang,
-  isDark,
-  setIsDark,
-}: NavigationProps) {
+export default function Navigation({ currentPage, setCurrentPage }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
-  // --- 1. AUTO-SCROLL LOGIC ---
-  useEffect(() => {
-    const handleInitialScroll = () => {
-      const hash = window.location.hash.replace("#", "");
-      if (hash) {
-        setTimeout(() => {
-          const element = document.getElementById(hash);
-          if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
-            if (typeof setCurrentPage === 'function') {
-                setCurrentPage(hash);
-            }
-          }
-        }, 100);
-      }
-    };
-
-    handleInitialScroll();
-    window.addEventListener("hashchange", handleInitialScroll);
-    return () => window.removeEventListener("hashchange", handleInitialScroll);
-  }, [setCurrentPage]);
-
-  // --- 2. LABELS ---
   const labels: Record<string, string> = { 
     home: "domů", 
     projects: "projekty", 
-    blog: "blog", 
     about: "o mně", 
     contact: "kontakt" 
   };
-  const navKeys = ["home", "projects", "blog", "about", "contact"];
+  
+  const navKeys = Object.keys(labels);
 
-  // --- 3. CLICK HANDLER ---
+  // Handle Hash Scrolling on Initial Load
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (hash && navKeys.includes(hash)) {
+      setTimeout(() => {
+        document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
+        setCurrentPage(hash);
+      }, 100);
+    }
+  }, []);
+
   const handleNavClick = (key: string) => {
-    setIsOpen(false); 
-    const routes: Record<string, string> = {
-      projects: "/projectspage",
-      blog: "/blog",
-      about: "/about"
-    };
+    setIsOpen(false);
 
     if (key === "home") {
-      window.location.href = "/";
-      return;
-    }
-
-    if (routes[key]) {
-      window.location.href = routes[key];
-      return;
-    }
-
-    if (window.location.pathname !== "/") {
-      window.location.href = `/#${key}`;
-    } else {
-      if (typeof setCurrentPage === 'function') {
-        setCurrentPage(key);
+      if (pathname === "/") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        router.push("/");
       }
+      setCurrentPage("home");
+      return;
+    }
+
+    // Navigation logic: If not on home, redirect home with hash. If on home, scroll.
+    if (pathname !== "/") {
+      router.push(`/#${key}`);
+    } else {
+      setCurrentPage(key);
       document.getElementById(key)?.scrollIntoView({ behavior: "smooth" });
       window.history.pushState(null, "", `#${key}`);
     }
@@ -97,7 +68,6 @@ export default function Navigation({
         transition={{ duration: 0.8, ease }}
         className="fixed top-0 left-0 w-full p-6 md:px-12 flex justify-between items-center z-[110] bg-white/80 backdrop-blur-md border-b border-black/5"
       >
-        {/* Logo */}
         <button
           onClick={() => handleNavClick("home")}
           className="text-[15px] font-bold tracking-[0.3em] uppercase text-black hover:text-orange-600 transition-colors"
@@ -120,27 +90,15 @@ export default function Navigation({
           ))}
         </div>
 
-        {/* Right Side Tools (Lang & Burger) */}
-        <div className="flex items-center gap-4">
-          {/* Language Toggle */}
-          <button 
-            onClick={() => setLang(lang === "EN" ? "CZ" : "EN")}
-            className="text-[10px] font-bold border border-black/10 px-2 py-1 rounded hover:bg-black hover:text-white transition-all"
-          >
-            {lang}
-          </button>
-
-          <button 
-            className="md:hidden text-black p-2 hover:bg-black/5 rounded-full transition-colors"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
+        <button 
+          className="md:hidden text-black p-2 hover:bg-black/5 rounded-full transition-colors"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </motion.nav>
 
-      {/* Mobile Sidebar Overlay */}
+      {/* Mobile Sidebar */}
       <AnimatePresence>
         {isOpen && (
           <>

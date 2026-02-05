@@ -6,7 +6,7 @@ import AboutPage from "../components/BlogPage.jsx";
 
 export default function AboutRoute() {
   const [isDark, setIsDark] = useState(true);
-  const [lang, setLang] = useState("EN");
+  const [lang, setLang] = useState("CZ");
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Sync preferences from localStorage

@@ -34,7 +34,7 @@ export default function BlogPage({ lang = "EN", isDark = true }) {
 
   const t = {
     EN: { title: "INSIGHT", span: "Journal", sub: "Thoughts // Process", search: "Search articles...", noResults: "No matches found." },
-    CZ: { title: "POSTŘEHY", span: "Deník", sub: "Myšlenky // Proces", search: "Hledat články...", noResults: "Nenalezeny žádné výsledky." }
+    CZ: { title: "Nápady", span: "Myšlenky", sub: "Myšlenky // Proces", search: "Hledat články...", noResults: "Nenalezeny žádné výsledky." }
   };
 
   const labels = t[lang] || t.EN;

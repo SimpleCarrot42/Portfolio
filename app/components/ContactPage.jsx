@@ -58,7 +58,7 @@ export default function ContactPage({ lang }) {
     setIsSubmitting(true);
 
     const formData = new FormData();
-    formData.append("access_key", "5c196dab-86f5-4d55-82b6-b7828af2ae9e");
+    formData.append("access_key", "e653a764-dd3f-46b0-b919-a22382495360");
     formData.append("name", formState.name);
     formData.append("email", formState.email);
     formData.append("message", formState.message);
@@ -108,7 +108,7 @@ export default function ContactPage({ lang }) {
         {/* Contact Methods */}
         <div className="grid md:grid-cols-2 gap-6 mb-16">
           <motion.a
-            href="mailto:marek@example.com"
+            href="mailto:marek@janasek.tech"
             whileHover={{ scale: 1.05, y: -4 }}
             className="p-8 rounded-3xl flex items-center gap-4 bg-black text-white shadow-xl shadow-black/10 transition-all"
           >
