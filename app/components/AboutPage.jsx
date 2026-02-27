@@ -76,7 +76,7 @@ export default function AboutPage({ lang = "CZ" }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="lg:col-span-5"
+          className="lg:col-span-5 bg-white"
         >
           <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-neutral-100 shadow-xl">
             <img src="/images/me/me.jpeg" alt="Marek" className="w-full h-full object-cover" loading="eager" />

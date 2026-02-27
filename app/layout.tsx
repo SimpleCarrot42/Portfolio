@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   var dark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
                   if (dark) {
                     document.documentElement.classList.add('dark');
-                    document.documentElement.style.backgroundColor = '#ffffffff';
+                    document.documentElement.style.backgroundColor = '#ffffff';
                   } else {
                     document.documentElement.classList.remove('dark');
                     document.documentElement.style.backgroundColor = '#ffffff';
@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-500">
+      <body className="min-h-screen bg-white dark:bg-white transition-colors duration-500">
         {children}
       </body>
     </html>

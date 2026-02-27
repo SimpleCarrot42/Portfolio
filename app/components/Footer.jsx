@@ -13,7 +13,7 @@ export default function Footer() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.5, duration: 1 }}
-      className="w-full px-6 md:px-12 pb-12 mt-32 bg-white"
+      className="w-full px-6 md:px-12 pb-12 mt-0 bg-white"
     >
       {/* The "Simple Line" */}
       <div 
@@ -24,7 +24,7 @@ export default function Footer() {
         }} 
       />
 
-      <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-6 bg-white">
         {/* Left Side: Year & Name */}
         <div className="flex items-center gap-4">
           <span 

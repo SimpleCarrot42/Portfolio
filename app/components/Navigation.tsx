@@ -50,7 +50,6 @@ export default function Navigation({ currentPage, setCurrentPage }: NavigationPr
       return;
     }
 
-    // Navigation logic: If not on home, redirect home with hash. If on home, scroll.
     if (pathname !== "/") {
       router.push(`/#${key}`);
     } else {
@@ -62,6 +61,7 @@ export default function Navigation({ currentPage, setCurrentPage }: NavigationPr
 
   return (
     <>
+      {/* NAVBAR */}
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -90,6 +90,7 @@ export default function Navigation({ currentPage, setCurrentPage }: NavigationPr
           ))}
         </div>
 
+        {/* Hamburger */}
         <button 
           className="md:hidden text-black p-2 hover:bg-black/5 rounded-full transition-colors"
           onClick={() => setIsOpen(!isOpen)}
@@ -102,6 +103,7 @@ export default function Navigation({ currentPage, setCurrentPage }: NavigationPr
       <AnimatePresence>
         {isOpen && (
           <>
+            {/* Overlay */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -110,26 +112,40 @@ export default function Navigation({ currentPage, setCurrentPage }: NavigationPr
               className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[105]"
             />
             
+            {/* Sidebar */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.5, ease }}
-              className="fixed top-0 right-0 h-full w-[80%] bg-white z-[120] flex flex-col pt-32 px-12 gap-8 shadow-2xl"
+              className="fixed top-0 right-0 h-full w-[80%] bg-white z-[120] flex flex-col px-8 pt-32 gap-8 shadow-2xl bg-white"
             >
-              {navKeys.map((key) => (
-                <button
-                  key={key}
-                  onClick={() => handleNavClick(key)}
-                  className={`text-[24px] text-left uppercase tracking-[0.1em] font-bold transition-all
-                    ${currentPage === key ? "text-orange-600" : "text-black/40 hover:text-black"}`}
-                >
-                  {labels[key]}
-                </button>
-              ))}
-              
+              {/* Close button inside menu */}
+              <button
+                onClick={() => setIsOpen(false)}
+                className="absolute top-6 right-6 p-2 rounded-full hover:bg-black/5 transition-colors z-50"
+              >
+                <X size={24} />
+              </button>
+
+              {/* Navigation links */}
+              <div className="flex flex-col gap-6 mt-12">
+                {navKeys.map((key) => (
+                  <button
+                    key={key}
+                    onClick={() => handleNavClick(key)}
+                    className={`text-[24px] text-left uppercase tracking-[0.1em] font-bold transition-all
+                      ${currentPage === key ? "text-orange-600" : "text-black/40 hover:text-black"}`}
+                  >
+                    {labels[key]}
+                  </button>
+                ))}
+              </div>
+
               <div className="mt-auto mb-12">
-                 <p className="text-[10px] uppercase tracking-widest font-bold opacity-20">© 2026 Marek Janásek</p>
+                <p className="text-[10px] uppercase tracking-widest font-bold opacity-20">
+                  © 2026 Marek Janásek
+                </p>
               </div>
             </motion.div>
           </>

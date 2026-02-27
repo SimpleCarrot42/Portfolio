@@ -3,7 +3,7 @@
 
 
 :root {
-  --bg: #fbfbfb;
+  --bg: white;
   --fg: #0f0f0f;
   --card: #ffffff;
   --border: rgba(0, 0, 0, 0.06);
@@ -22,6 +22,11 @@ body {
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
+header, section, main {
+  /* This ensures that even if there is a rendering lag, the "fill" is white */
+  background-color: white !important;
+  outline: 1px solid white; /* Tiny overlap to hide seams */
+}
 
 
 /* Subtle grain texture – optional but premium */
@@ -31,7 +36,6 @@ body::before {
   inset: 0;
   pointer-events: none;
   opacity: 0.035;
-  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
   z-index: 50;
 }
 

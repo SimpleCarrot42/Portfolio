@@ -40,10 +40,10 @@ const translations = {
     status: "Instalace a nastavení",
     optimized: "Jednoduché",
     logic: "Jádro aplikace",
-    auth: "Integrace",
-    speed: "Interval detekce",
+    auth: "Knihovny",
+    speed: "Rychlost detekce",
     engineeringTitle: "Technický přehled",
-    defaultDescription: "WalkAway-Lock automaticky zamkne váš laptop, pokud se přednastavené Bluetooth zařízení dostane mimo dosah. Pomocí knihovny Bleak detekuje přítomnost zařízení s latencí ~3 s. Lehký, snadno konfigurovatelný, ideální pro Hackathony nebo veřejná místa.",
+    defaultDescription: "WalkAway-Lock automaticky zamkne váš laptop, pokud se přednastavené Bluetooth zařízení dostane mimo dosah. Pomocí knihovny Bleak detekuje přítomnost zařízení s latencí ~3 s. Lehký, snadno konfigurovatelný kód, ideální pro Hackathony nebo veřejná místa.",
     quote: "Bezpečnost je tak silná, jako její nejslabší článek.",
     envSetup: "Instalace a spuštění",
     perfBench: "Přehled výkonu",
@@ -210,7 +210,7 @@ export default function ProjectPage({ setCurrentPage }) {
                   </tr>
                   <tr>
                     <td className="p-5 font-medium">{t.hydration}</td>
-                    <td className="p-5 font-mono text-orange-600">Locks main device</td>
+                    <td className="p-5 font-mono text-orange-600">Příkaz pro GNOME</td>
                   </tr>
                 </tbody>
               </table>
