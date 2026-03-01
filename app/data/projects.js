@@ -104,4 +104,5 @@ export const projects = [
     year: "2026",
     tags: ["React", "PostgresSQL", "Leaflet", "RLS"],
   }
+
 ];

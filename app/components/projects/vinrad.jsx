@@ -69,7 +69,7 @@ export default function ProjectPage({ setCurrentPage }) {
 
   return (
     <div className={`min-h-screen transition-colors duration-500 relative ${
-      isDark ? 'bg-[#0a0a0a] text-white' : 'bg-[#fafafa] text-black'
+      isDark ? 'bg-[#0a0a0a] text-white' : 'bg-[#ffffff] text-black'
     }`}>
       
       <Navigation 

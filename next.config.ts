@@ -1,12 +1,19 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === 'production';
+
 const nextConfig = {
-  output: 'export',          
-  trailingSlash: true,       // THIS IS THE KEY: Creates /projects/index.html
+  // Only use 'export' when running 'npm run build'
+  output: isProd ? 'export' : undefined, 
+  
+  // These are fine to keep, but trailingSlash is safer as undefined in dev
+  trailingSlash: isProd ? true : false, 
+  
   images: {
     unoptimized: true,       
   },
   typescript: {
-    ignoreBuildErrors: true, 
+    // Keep this true if you must, but it's safer to see errors in dev
+    ignoreBuildErrors: !isProd, 
   },
 }
 
