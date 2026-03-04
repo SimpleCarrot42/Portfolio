@@ -1,121 +1,77 @@
 "use client";
 
 import { motion, useScroll, useSpring } from "framer-motion";
-import { 
-  ArrowRight, 
-  Terminal, 
-  Settings, 
-  ShieldCheck, 
-  Copy, 
-  Check,
-  Plus
-} from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { useState } from "react";
-import Navigation from "../Navigation"; 
+import Navigation from "../Navigation";
 
 const ease = [0.16, 1, 0.3, 1];
 
-const translations = {
-  EN: {
-    systemDoc: "System Documentation",
-    architectureCase: "Architecture Case",
-    status: "Status",
-    optimized: "Optimized",
-    logic: "Logic",
-    auth: "Auth",
-    speed: "Speed",
-    engineeringTitle: "Engineering Deep-Dive",
-    defaultDescription: "Full project breakdown and technical implementation details.",
-    quote: "The architecture prioritizes sub-second latency and atomic state management across distributed nodes.",
-    envSetup: "Environment Setup",
-    perfBench: "Performance Benchmarks",
-    process: "Process",
-    latency: "Latency",
-    edgeFetch: "Edge Fetch",
-    hydration: "Hydration",
-    continueConvo: "Continue the conversation",
-    inquireNow: "Inquire Now"
+const images = [
+  {
+    id: "h1",
+    title: "Home",
+    img: "/images/ProjectPageImages/books/home.png",
   },
+  {
+    id: "h2",
+    title: "Detail knihy",
+    img: "/images/ProjectPageImages/books/detail.png",
+  },
+];
+
+const translations = {
   CZ: {
-    systemDoc: "Systémová dokumentace",
-    architectureCase: "Architektonický případ",
-    status: "Stav",
-    optimized: "Optimalizováno",
-    logic: "Logika",
-    auth: "Autentizace",
-    speed: "Rychlost",
-    engineeringTitle: "Technický rozbor",
-    defaultDescription: "Úplný rozpis projektu a technické implementační detaily.",
-    quote: "Architektura upřednostňuje subsekondovou latenci a atomické řízení stavu napříč distribuovanými uzly.",
-    envSetup: "Nastavení prostředí",
-    perfBench: "Výkonnostní testy",
-    process: "Proces",
-    latency: "Latence",
-    edgeFetch: "Edge načtení",
-    hydration: "Hydratace",
-    continueConvo: "Pokračujte v konverzaci",
-    inquireNow: "Zeptat se nyní"
-  }
+    systemDoc: "Specifikace projektu",
+    status: "Prostředí",
+    optimized: "Produkce / Live",
+    logic: "Zdroj dat",
+    auth: "Hlavní stack",
+    speed: "Hosting",
+    desciptionTitle: "Popis",
+    defaultDescription:
+      "Jedna z mých prvních webových stránek která ověřila znalosti získané na letní škole, zobrazuje knihy ktéré jsem prečetl v roce 2024. Poté už jsem knihy další knihy nepřidával. Motivací bylo digitalizovat můj školní čtenářský deník, a otestovat své znalosti.",
+    techdescTitle: "Technický přehled",
+    techDescription:
+      "Celý web je velmi jednoduchý a je postavený na HTML,CSS,JS. Projekt néma databázi s kterými jsem v době vývoje neuměl pracovat, a proto jsou likes/dislikes ukládány pouze lokálně. Habruger menu je též pouze experimentálni a chtěl jsem si sním pohrát, podstránky vněm uváděné neexistují. Uznávám že jsem je mohl dodělat ale byl jsem pln nadšení pro další projekty",
+    perfBench: "Přehled příkazů",
+    process: "Popis",
+    latency: "Příkaz",
+    follow: "Nasledovaní hráče",
+    drop: "Dropování itemů",
+    miney: "Těžení rud",
+    map: "Obrana oblasti",
+    raid: "Destrukce",
+    continueConvo: "Navštívit projekt",
+    inquireNow: "Github Repo",
+    inquireNow2: "Books",
+    goBack: "Zpět",
+  },
 };
 
-const CodeBlock = ({ code, filename, isDark }) => {
-  const [copied, setCopied] = useState(false);
-  const copy = () => {
-    navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div className={`my-10 rounded-2xl overflow-hidden border ${
-      isDark ? 'border-white/10 bg-white/5' : 'border-black/5 bg-[#f9f9f9]'
-    }`}>
-      <div className={`flex justify-between items-center px-5 py-3 border-b ${
-        isDark ? 'border-white/10 bg-white/5' : 'border-black/5 bg-white'
-      }`}>
-        <span className="text-[10px] font-mono font-bold opacity-40 uppercase tracking-widest">{filename}</span>
-        <button onClick={copy} className="opacity-40 hover:opacity-100 transition-opacity">
-          {copied ? <Check size={14} className="text-green-600" /> : <Copy size={14} />}
-        </button>
-      </div>
-      <pre className={`p-6 overflow-x-auto text-sm font-mono leading-relaxed ${
-        isDark ? 'text-white/70' : 'text-black/70'
-      }`}>
-        <code>{code}</code>
-      </pre>
-    </div>
-  );
-};
-
-export default function ProjectPage({ setCurrentPage }) {
-  // State management for theme and language
-  const [isDark, setIsDark] = useState(false);
-  const [lang, setLang] = useState("CZ");
-
-  const t = translations[lang] || translations.EN;
+export default function ProjectDetailPage({
+  project,
+  isDark,
+  setIsDark,
+  lang,
+  setLang,
+}) {
+  const t = translations[lang] || translations.CZ;
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
-  // Project data
-  const project = {
-    title: "GoDrive",
-    year: "2026",
-    description: {
-      EN: "A modern cloud storage platform built with Next.js, featuring real-time file synchronization, advanced sharing capabilities, and enterprise-grade security.",
-      CZ: "Moderní cloudová úložná platforma postavená na Next.js s funkcemi synchronizace souborů v reálném čase, pokročilými možnostmi sdílení a zabezpečením na podnikové úrovni."
-    },
-    tags: ["Next.js", "TypeScript", "Clerk", "Turso", "Drizzle"]
-  };
+  const displayTitle = "Books";
+  const displaySubtitle = null;
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 relative ${
-      isDark ? 'bg-[#0a0a0a] text-white selection:bg-orange-900/30' : 'bg-white text-black selection:bg-orange-100'
-    }`}>
-      
-      {/* 1. THE NAVIGATION */}
-      <Navigation 
+    <div
+      className={`min-h-screen transition-colors duration-500 relative ${
+        isDark ? "bg-[#0a0a0a] text-white" : "bg-[#ffffff] text-black"
+      }`}
+    >
+      {/* NAVBAR COMPONENT */}
+      <Navigation
         currentPage="projects"
-        setCurrentPage={setCurrentPage}
         isDark={isDark}
         setIsDark={setIsDark}
         lang={lang}
@@ -123,118 +79,127 @@ export default function ProjectPage({ setCurrentPage }) {
         forceBlack={!isDark}
       />
 
-      {/* 2. READING PROGRESS BAR */}
-      <motion.div 
-        className="fixed top-0 left-0 right-0 h-1 bg-orange-600 z-[110] origin-left" 
-        style={{ scaleX }} 
+      {/* Scroll Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-orange-600 z-[110] origin-left"
+        style={{ scaleX }}
       />
 
-      {/* 3. HERO AREA */}
+      {/* RETURN BUTTON */}
+      <div className="fixed top-28 left-6 md:left-12 z-[100]">
+        <button
+          onClick={() => window.history.back()}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all hover:scale-105 active:scale-95 ${
+            isDark
+              ? "bg-white/5 border-white/10 text-white hover:bg-white/10"
+              : "bg-black/5 border-black/10 text-black hover:bg-black/10"
+          }`}
+        >
+          <ArrowLeft size={16} />
+          <span className="text-xs font-bold uppercase tracking-widest">
+            {t.goBack}
+          </span>
+        </button>
+      </div>
+
       <header className="pt-64 pb-24 px-6 md:px-12 lg:px-24 max-w-[1400px] mx-auto">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease }}
         >
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-2 h-2 rounded-full bg-orange-600 animate-pulse" />
+            <div className="w-2 h-2 rounded-full bg-orange-600" />
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-30">
-              {t.systemDoc} // {project.year}
+              {t.systemDoc} // {project?.year || "2026"}
             </span>
           </div>
 
           <h1 className="text-[12vw] md:text-[8vw] font-bold leading-[0.8] tracking-[-0.07em] uppercase">
-            {project.title}<br />
-            <span className={`italic font-light lowercase tracking-tight ${
-              isDark ? 'text-white/10' : 'text-black/10'
-            }`}>
-              {t.architectureCase}
-            </span>
+            {displayTitle}
+            <br />
+            <span className="text-orange-600">{displaySubtitle}</span>
           </h1>
         </motion.div>
-
-        {/* COMPACT BENTO WIDGETS */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20">
-          {[
-            { label: t.status, val: t.optimized, icon: <Settings size={14}/> },
-            { label: t.logic, val: "TypeScript", icon: <Terminal size={14}/> },
-            { label: t.auth, val: "Clerk / JWT", icon: <ShieldCheck size={14}/> },
-            { label: t.speed, val: "98 Score", icon: <Plus size={14}/> }
-          ].map((w, i) => (
-            <div key={i} className={`p-8 rounded-3xl border flex flex-col justify-between h-40 transition-transform hover:scale-[1.02] ${
-              isDark ? 'bg-white/5 border-white/10' : 'bg-[#f9f9f9] border-black/5'
-            }`}>
-              <div className="text-orange-600">{w.icon}</div>
-              <div>
-                <p className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-30 mb-1">{w.label}</p>
-                <p className="text-sm font-bold uppercase tracking-tight">{w.val}</p>
-              </div>
-            </div>
-          ))}
-        </div>
       </header>
 
-      {/* 4. CONTENT BODY */}
-      <main className="max-w-6xl mx-auto px-6 py-24 pb-64">
+      <main className="max-w-6xl mx-auto px-6 py-5 pb-64">
         <article className="space-y-24">
-          
           <section>
-            <h2 className="text-3xl font-bold tracking-tighter uppercase mb-8">{t.engineeringTitle}</h2>
-            <p className={`text-lg leading-relaxed mb-8 ${
-              isDark ? 'text-white/60' : 'text-black/60'
-            }`}>
-              {project.description[lang]}
-            </p>
-            <p className={`leading-relaxed italic ${
-              isDark ? 'text-white/40' : 'text-black/40'
-            }`}>
-              "{t.quote}"
+            <h2 className="text-3xl font-bold tracking-tighter uppercase mb-5">
+              {t.desciptionTitle}
+            </h2>
+            <p
+              className={`text-lg leading-relaxed max-w-7xl ${isDark ? "text-white/60" : "text-black/70"}`}
+            >
+              {t.defaultDescription}
             </p>
           </section>
 
-          <section>
-            <h3 className="text-sm font-bold uppercase tracking-widest opacity-30 mb-6">{t.envSetup}</h3>
-            <CodeBlock 
-              isDark={isDark}
-              filename="env.local"
-              code={`NEXT_PUBLIC_API_URL=https://api.v1.prod\nDATABASE_URL=postgres://user:pass@host:5432/db\nNODE_ENV=production`}
-            />
-          </section>
+          {/* OBRAZKY SEM*/}
+          <div className="grid grid-cols-2 gap-6">
+            {images.map((image, idx) => (
+              <div
+                key={image.id}
+                onClick={() => {
+                  setSelectedImg(image);
+                  setCurrentIndex(idx);
+                  setViewType("hobby");
+                }}
+                className="relative rounded-[2rem] overflow-hidden cursor-pointer border border-neutral-100 bg-neutral-50 h-[350px] hover:shadow-lg transition-shadow"
+              >
+                <img
+                  src={image.img}
+                  alt={image.title}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+
+                <div className="absolute bottom-8 left-8">
+                  <span className="text-white text-[10px] font-black uppercase tracking-[0.2em] bg-black/40 backdrop-blur-md px-4 py-1.5 rounded-full">
+                    {image.title}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
 
           <section>
-            <h3 className="text-2xl font-bold tracking-tight mb-8">{t.perfBench}</h3>
-            <div className={`rounded-3xl border overflow-hidden shadow-sm ${
-              isDark ? 'border-white/10' : 'border-black/5'
-            }`}>
-              <table className="w-full text-left text-sm">
-                <thead className={`border-b ${
-                  isDark ? 'bg-white/5 border-white/10' : 'bg-[#f9f9f9] border-black/5'
-                }`}>
-                  <tr>
-                    <th className="p-5 font-bold uppercase text-[10px] tracking-widest opacity-40">{t.process}</th>
-                    <th className="p-5 font-bold uppercase text-[10px] tracking-widest opacity-40">{t.latency}</th>
-                  </tr>
-                </thead>
-                <tbody className={`divide-y ${
-                  isDark ? 'divide-white/10' : 'divide-black/5'
-                }`}>
-                  <tr>
-                    <td className="p-5 font-medium">{t.edgeFetch}</td>
-                    <td className="p-5 font-mono text-orange-600">42ms</td>
-                  </tr>
-                  <tr>
-                    <td className="p-5 font-medium">{t.hydration}</td>
-                    <td className="p-5 font-mono text-orange-600">120ms</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <h2 className="text-3xl font-bold tracking-tighter uppercase mb-8">
+              {t.techdescTitle}
+            </h2>
+            <p
+              className={`text-lg leading-relaxed max-w-7xl ${isDark ? "text-white/60" : "text-black/70"}`}
+            >
+              {t.techDescription}
+            </p>
           </section>
-
         </article>
 
-        {/* 5. FOOTER */}
-
+        {/* BOTTOM CTA */}
+        <div className="flex flex-col items-center justify-denter mt-32 text-center">
+          <h2 className="text-4xl font-bold tracking-tighter uppercase mb-10">
+            {t.continueConvo}
+          </h2>
+          <div className="flex gap-6">
+            <a
+              href="https://github.com/SimpleCarrot42/Books"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-10 py-5 bg-orange-600 text-white rounded-full font-bold flex items-center gap-3 hover:bg-orange-700 transition-all hover:sclae-105 active:scale-95 shadow-xl shadow-orange-600/20"
+            >
+              {t.inquireNow} <ExternalLink size={18}></ExternalLink>
+            </a>
+            <a
+              href="https://simplecarrot42.github.io/Books/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-10 py-5 bg-orange-600 text-white rounded-full font-bold flex items-center gap-3 hover:bg-orange-700 transition-all hover:sclae-105 active:scale-95 shadow-xl shadow-orange-600/20"
+            >
+              {t.inquireNow2} <ExternalLink size={18}></ExternalLink>
+            </a>
+          </div>
+        </div>
       </main>
     </div>
   );
