@@ -1,10 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
+
+// --- Optional: NavigationProps fix if you haven't updated Navigation.tsx ---
+/*
+interface NavigationProps {
+  currentPage: string;
+  setCurrentPage: (page: string) => void;
+  lang: string;
+  setLang: Dispatch<SetStateAction<string>>;
+}
+*/
 
 export default function NotFound() {
   const [lang, setLang] = useState("EN");
@@ -23,11 +33,10 @@ export default function NotFound() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-black selection:bg-orange-100">
-      <Navigation 
+      {/* Navigation with proper props */}
+      <Navigation
         currentPage="" 
         setCurrentPage={() => {}} // No-op for 404
-        lang={lang} 
-        setLang={setLang} 
       />
 
       <main className="flex-grow flex flex-col items-center justify-center pt-24 px-6">

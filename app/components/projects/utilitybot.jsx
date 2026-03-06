@@ -77,7 +77,8 @@ export default function ProjectDetailPage({ project, isDark, setIsDark, lang, se
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
-  const displayTitle =  "Books";
+  const displayTitle =  "Mineflayer";
+  const displaySubtitle = "utility bot";
 
   return (
     <div className={`min-h-screen transition-colors duration-500 relative ${
@@ -147,31 +148,6 @@ export default function ProjectDetailPage({ project, isDark, setIsDark, lang, se
               {t.defaultDescription}
             </p>
           </section>
-                    {/* OBRAZKY SEM*/}
-          <div className="grid grid-cols-2 gap-6">
-            {images.map((image, idx) => (
-              <div
-                key={image.id}
-                onClick={() => {
-
-                }}
-                className="relative rounded-[2rem] overflow-hidden cursor-pointer border border-neutral-100 bg-neutral-50 h-[350px] hover:shadow-lg transition-shadow"
-              >
-                <img
-                  src={image.img}
-                  alt={image.title}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-
-                <div className="absolute bottom-8 left-8">
-                  <span className="text-white text-[10px] font-black uppercase tracking-[0.2em] bg-black/40 backdrop-blur-md px-4 py-1.5 rounded-full">
-                    {image.title}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
 
           <section>
             <h2 className="text-3xl font-bold tracking-tighter uppercase mb-8">

@@ -68,10 +68,6 @@ export default function Portfolio() {
       <Navigation
         currentPage={currentPage}
         setCurrentPage={setCurrentPage as any}
-        isDark={isDark}
-        setIsDark={setIsDark as any}
-        lang={lang}
-        setLang={setLang as any}
       />
 
       <main className="flex-grow pt-24">
@@ -88,7 +84,6 @@ export default function Portfolio() {
               <HomePage 
                 setCurrentPage={setCurrentPage as any} 
                 lang={lang} 
-                isDark={isDark} 
                 allProjects={jsonProjects as any} 
               />
             )}
@@ -97,7 +92,7 @@ export default function Portfolio() {
               <ProjectsPage 
                 allProjects={jsonProjects as any} 
                 lang={lang} 
-                isDark={isDark} 
+
               />
             )}
 
@@ -105,21 +100,19 @@ export default function Portfolio() {
             {currentPage === "about" && (
               <AboutPage 
                 lang={lang} 
-                isDark={isDark} 
               />
             )}
 
             {currentPage === "contact" && (
               <ContactPage 
                 lang={lang} 
-                isDark={isDark} 
               />
             )}
           </motion.div>
         </AnimatePresence>
       </main>
 
-      <Footer isDark={isDark} />
+      <Footer/>
     </div>
   );
 }

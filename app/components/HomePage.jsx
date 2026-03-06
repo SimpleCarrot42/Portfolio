@@ -1,10 +1,8 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Sparkles, Zap } from "lucide-react";
-
-const ease = [0.16, 1, 0.3, 1];
 
 const translations = {
   EN: {
@@ -20,7 +18,7 @@ const translations = {
     heroBtn2: "Kontaktujte mě",
     recentTitle: "Nedávné projekty",
     scrollHint: "Prozkoumejte posunutím do strany",
-  }
+  },
 };
 
 export default function HomePage({ setCurrentPage, lang, allProjects }) {
@@ -35,7 +33,7 @@ export default function HomePage({ setCurrentPage, lang, allProjects }) {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-  const featuredProjects = allProjects?.filter(p => p.pinned === true) || [];
+  const featuredProjects = allProjects?.filter((p) => p.pinned) || [];
 
   return (
     <div className="min-h-screen bg-white text-black selection:bg-orange-100">
@@ -51,7 +49,7 @@ export default function HomePage({ setCurrentPage, lang, allProjects }) {
           Portfolio // Marek Janasek
         </motion.p>
 
-        <motion.h1 className="relative z-10 text-[14vw] sm:text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-[0.9] sm:leading-[0.85] tracking - [0.3]">
+        <motion.h1 className="relative z-10 text-[14vw] sm:text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-[0.9] sm:leading-[0.85] tracking-[-0.03em]">
           Portfolio <br />
           <span className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 bg-clip-text text-transparent italic font-light tracking-[-0.06em]">
             2026
@@ -82,7 +80,7 @@ export default function HomePage({ setCurrentPage, lang, allProjects }) {
 
       {/* PROJECTS */}
       <section className="py-20 md:py-32 px-5 sm:px-6 md:px-12 lg:px-20 overflow-hidden">
-        <motion.div className="mb-10 sm:mb-12">
+        <div className="mb-10 sm:mb-12">
           <h2 className="text-[10px] uppercase tracking-[0.3em] font-bold text-orange-600 mb-4 flex items-center gap-2">
             <Zap size={12} fill="currentColor" />
             Projects
@@ -90,7 +88,7 @@ export default function HomePage({ setCurrentPage, lang, allProjects }) {
           <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold">
             {t.recentTitle}
           </h3>
-        </motion.div>
+        </div>
 
         <div className="relative">
           <div
@@ -109,9 +107,7 @@ export default function HomePage({ setCurrentPage, lang, allProjects }) {
                   className="min-w-[90%] sm:min-w-[80%] md:min-w-[500px] snap-center"
                 >
                   <div
-                    onClick={() =>
-                      (window.location.href = `/projects/${project.slug}`)
-                    }
+                    onClick={() => (window.location.href = `/projects/${project.slug}`)}
                     className="group relative rounded-[2rem] sm:rounded-[2.5rem] border border-black/5 bg-[#f9f9f9] p-6 sm:p-8 md:p-12 h-auto sm:h-[420px] md:h-[450px] flex flex-col justify-between cursor-pointer overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2"
                   >
                     <div className="absolute -bottom-4 -right-4 text-[8rem] sm:text-[10rem] font-black opacity-[0.03] group-hover:opacity-[0.08] transition-opacity pointer-events-none">
@@ -139,7 +135,7 @@ export default function HomePage({ setCurrentPage, lang, allProjects }) {
                       <div className="flex flex-wrap gap-2">
                         {(Array.isArray(project.tags) ? project.tags : [])
                           .slice(0, 3)
-                          .map(tag => (
+                          .map((tag) => (
                             <span
                               key={tag}
                               className="px-3 py-1 rounded-full text-[10px] font-bold border border-black/10 bg-white/50"

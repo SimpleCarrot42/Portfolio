@@ -1,7 +1,6 @@
 "use client";
-
 import { projects as allProjects } from "../../data/projects";
-import ProjectDetailPage from "../../components/projects/vinrad"; 
+import ProjectDetailPage from "../../components/projects/vinrad";
 
 export default function VinRadPage() {
   const project = allProjects.find((p) => p.slug === "vinrad");
@@ -15,10 +14,9 @@ export default function VinRadPage() {
   }
 
   return (
-    <ProjectDetailPage 
-      project={project} 
-      isDark={true} 
-      lang="CZ" 
+    <ProjectDetailPage
+      project={project}
+      lang="CZ"
     />
   );
 }

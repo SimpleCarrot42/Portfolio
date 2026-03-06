@@ -4,8 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, ImageOff } from "lucide-react";
 
 const ease = [0.16, 1, 0.3, 1];
-
-export default function ProjectsPage({ allProjects = [], lang = "EN", isDark = true }) {
+export default function Portfolio({ allProjects = [], lang = "EN", isDark = true }) {
   const sortedProjects = [...allProjects].sort((a, b) => (a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1));
 
   const t = {

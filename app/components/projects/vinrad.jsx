@@ -29,6 +29,12 @@ const images = [
   },
 ];
 
+const project = {
+  year: "2025",
+  title: "Vinařský",
+  subtitle: "Radar",
+};
+
 const translations = {
   CZ: {
     systemDoc: "Specifikace projektu",
