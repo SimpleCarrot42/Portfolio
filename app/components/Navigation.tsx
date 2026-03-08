@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, Dispatch, SetStateAction } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
@@ -9,21 +9,10 @@ const ease = [0.16, 1, 0.3, 1] as const;
 
 interface NavigationProps {
   currentPage: string;
-  setCurrentPage: Dispatch<SetStateAction<string>>;
-  isDark?: boolean;                     // optional dark mode
-  setIsDark?: Dispatch<SetStateAction<boolean>>; // optional dark mode setter
-  lang?: string;                         // optional language
-  setLang?: Dispatch<SetStateAction<string>>;   // optional language setter
+  setCurrentPage: (page: string) => void;
 }
 
-export default function Navigation({
-  currentPage,
-  setCurrentPage,
-  isDark,
-  setIsDark,
-  lang,
-  setLang
-}: NavigationProps) {
+export default function Navigation({ currentPage, setCurrentPage }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -83,7 +72,7 @@ export default function Navigation({
           onClick={() => handleNavClick("home")}
           className="text-[15px] font-bold tracking-[0.3em] uppercase text-black hover:text-orange-600 transition-colors"
         >
-          Marek Janásek
+          <span className="text-[15px]">M</span>arek <span className="text-[16px] font-bold">J</span>anásek
         </button>
 
         {/* Desktop Links */}
@@ -100,26 +89,6 @@ export default function Navigation({
             </button>
           ))}
         </div>
-
-        {/* Optional Dark Mode Toggle */}
-        {isDark !== undefined && setIsDark && (
-          <button
-            className="ml-4 text-sm p-1 border rounded"
-            onClick={() => setIsDark(!isDark)}
-          >
-            {isDark ? "Light" : "Dark"}
-          </button>
-        )}
-
-        {/* Optional Language Toggle */}
-        {lang && setLang && (
-          <button
-            className="ml-4 text-sm p-1 border rounded"
-            onClick={() => setLang(lang === "EN" ? "CZ" : "EN")}
-          >
-            {lang}
-          </button>
-        )}
 
         {/* Hamburger */}
         <button 
@@ -149,7 +118,7 @@ export default function Navigation({
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.5, ease }}
-              className="fixed top-0 right-0 h-full w-[80%] bg-white z-[120] flex flex-col px-8 pt-32 gap-8 shadow-2xl"
+              className="fixed top-0 right-0 h-full w-[80%] bg-white z-[120] flex flex-col px-8 pt-32 gap-8 shadow-2xl bg-white"
             >
               {/* Close button inside menu */}
               <button

@@ -1,18 +1,33 @@
 export const projects = [
-  {
-    id: "01",
-    slug: "godrive",
-    title: "GoDrive",
+    {
+    id: "07",
+    slug: "vinrad",
+    title: "vinarskyradar.cz",
     pinned: true,
     inDevelopment: true,
-    category: { EN: "Full-Stack Platform", CZ: "Full-Stack Platforma" },
+    category: { EN: "FullStack", CZ: "FullStack" },
     description: {
-      EN: "Secure file-sharing platform built with Next.js and Go.",
-      CZ: "Zabezpečená platforma pro sdílení souborů postavená na Next.js a Go."
+      EN: "This should be displayed.",
+      CZ: "Potenciální startup, který se zaměřuje na propojení vinařů s klientelou."
     },
-    image: "/images/projects/1.png", 
+    image: "/images/projects/7.png",
     year: "2026",
-    tags: ["Next.js", "Go", "PostgreSQL"],
+    tags: ["React", "PostgresSQL", "Leaflet", "RLS"],
+  },
+    {
+    id: "06",
+    slug: "models",
+    title: "3D Tisk",
+    pinned: true,
+    inDevelopment: true,
+    category: { EN: "3D Printing", CZ: "3D Printing" },
+    description: {
+      EN: "This should be displayed.",
+      CZ: "Přehled všech mých 3D modelů."
+    },
+    image: "/images/projects/6.png",
+    year: "2026",
+    tags: ["3D Printing", "Fusion 360"],
   },
   {
     id: "02",
@@ -74,35 +89,20 @@ export const projects = [
     year: "2026",
     tags: ["Node.js", "Mineflayer", "Pathfinding"],
   },
-  {
-    id: "06",
-    slug: "models",
-    title: "3D Tisk",
-    pinned: true,
+    {
+    id: "01",
+    slug: "godrive",
+    title: "GoDrive",
+    pinned: false,
     inDevelopment: true,
-    category: { EN: "3D Printing", CZ: "3D Printing" },
+    category: { EN: "Full-Stack Platform", CZ: "Full-Stack Platforma" },
     description: {
-      EN: "This should be displayed.",
-      CZ: "Přehled všech mých 3D modelů."
+      EN: "Secure file-sharing platform built with Next.js and Go.",
+      CZ: "Zabezpečená platforma pro sdílení souborů postavená na Next.js a Go."
     },
-    image: "/images/projects/6.png",
+    image: "/images/projects/1.png", 
     year: "2026",
-    tags: ["3D Printing", "Fusion 360"],
-  },
-  {
-    id: "07",
-    slug: "vinrad",
-    title: "vinarskyradar.cz",
-    pinned: true,
-    inDevelopment: true,
-    category: { EN: "FullStack", CZ: "FullStack" },
-    description: {
-      EN: "This should be displayed.",
-      CZ: "Potenciální startup, který se zaměřuje na propojení vinařů s klientelou."
-    },
-    image: "/images/projects/7.png",
-    year: "2026",
-    tags: ["React", "PostgresSQL", "Leaflet", "RLS"],
+    tags: ["Next.js", "Go", "PostgreSQL"],
   }
 
 ];

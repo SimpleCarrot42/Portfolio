@@ -27,7 +27,7 @@ export default function AboutPage({ lang = "CZ" }) {
     },
     CZ: {
       greeting: "Marek Janásek",
-      heading: "Počítače / Logika / Objevování",
+      heading: "Něco o mně",
       bio: `Jsem autorem tohoto webu postaveného v moderním stacku Next.js a Tailwind CSS, na kterém představuji portfolio svých projektů.
       
       Jako žák 9. třídy ZŠ Kunratice bych rád pokračoval ve studiu na SSPŠ, a proto se hlásím k přijímacím zkouškám na obor Kybernetické bezpečnosti (1. volba) a Gymnázium (2. volba).
@@ -36,7 +36,7 @@ export default function AboutPage({ lang = "CZ" }) {
       
       Mimo IT se věnuji horské turistice a sportům, basketbal hraji již pět let. Také studuji němčinu a angličtinu, ve které mám úroveň B1 (Cambridge certifikát). Myslím si, že SSPŠ pro mě představuje ideální prostředí, kde bych své experimenty posunul v profesionální dovednosti.`,
       hobbyHeading: "Volný čas",
-      certHeading: "Výsledky práce",
+      certHeading: "Osvědčení",
     }
   };
 
@@ -46,16 +46,17 @@ export default function AboutPage({ lang = "CZ" }) {
   const bioParagraphs = useMemo(() => t.bio.split('\n').filter(p => p.trim()), [t.bio]);
 
   const hobbies = [
-    { id: 'h1', title: "Mountain Hiking", img: "/images/hobbies/hiking.jpg", span: "md:col-span-2 md:row-span-2" },
-    { id: 'h2', title: "Travel", img: "/images/hobbies/travel.jpg", span: "md:col-span-1 md:row-span-1" },
-    { id: 'h3', title: "Skiing", img: "/images/hobbies/ski.jpg", span: "md:col-span-1 md:row-span-1" },
+    { id: 'h1', title: "Túry - Kanada", img: "/images/hobbies/hiking.jpg", span: "md:col-span-2 md:row-span-2" },
+    { id: 'h2', title: "Cestování - Srí Lanka", img: "/images/hobbies/travel.jpg", span: "md:col-span-1 md:row-span-1" },
+    { id: 'h3', title: "Lyžování - Rakousko", img: "/images/hobbies/ski.jpg", span: "md:col-span-1 md:row-span-1" },
   ];
 
   const certificates = [
-    { id: 'c1', title: "Hackdays Winner", type: "AWARD", img: "/images/certificats/hackdays1.jpg", date: "2024" },
-    { id: 'c4', title: "Cambridge B1", type: "LANG", img: "/images/certificats/cambridgeb1.png", date: "2023" }, 
-    { id: 'c2', title: "Python Specialist", type: "CERT", img: "/images/certificats/vzb.png", date: "2024" },
-    { id: 'c3', title: "Hackdays Finalist", type: "AWARD", img: "/images/certificats/hackdays2.jpg", date: "2023" },
+    { id: 'c1', title: "Cambridge B1", type: "LANG", img: "/images/certificats/cambridgeb1.png", date: "2024" }, 
+    { id: 'c2', title: "Python kurz", type: "CERT", img: "/images/certificats/vzb.png", date: "2025" },
+    { id: 'c3', title: "Hackdays Crypto & Web", type: "CERT", img: "/images/certificats/hackdays1.jpg", date: "2025" },
+    { id: 'c4', title: "Hackdays Linux & Networks", type: "CERT", img: "/images/certificats/hackdays2.jpg", date: "2025" },
+    { id: 'c5', title: "Hackdays Linux & Networks", type: "CERT", img: "/images/certificats/hackdays3.jpg", date: "2026" },
   ];
 
   const navigate = (direction) => {
@@ -84,6 +85,7 @@ export default function AboutPage({ lang = "CZ" }) {
           </div>
           
           <div className="mt-6 flex items-center gap-3 px-2">
+            {/* */}
             <div className="w-2.5 h-2.5 bg-green-500 rounded-full" />
             <span className="text-[11px] font-bold uppercase tracking-widest opacity-50">Active • 2026 Status</span>
           </div>

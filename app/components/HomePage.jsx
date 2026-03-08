@@ -49,8 +49,8 @@ export default function HomePage({ setCurrentPage, lang, allProjects }) {
           Portfolio // Marek Janasek
         </motion.p>
 
-        <motion.h1 className="relative z-10 text-[14vw] sm:text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-[0.9] sm:leading-[0.85] tracking-[-0.03em]">
-          Portfolio <br />
+        <motion.h1 className="relative z-10 text-[14vw] sm:text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-[0.9] sm:leading-[0.85] tracking-[-0.04em]">
+          Po<span className="tracking-[0.01em]">rtf</span>olio <br />
           <span className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 bg-clip-text text-transparent italic font-light tracking-[-0.06em]">
             2026
           </span>
@@ -83,7 +83,7 @@ export default function HomePage({ setCurrentPage, lang, allProjects }) {
         <div className="mb-10 sm:mb-12">
           <h2 className="text-[10px] uppercase tracking-[0.3em] font-bold text-orange-600 mb-4 flex items-center gap-2">
             <Zap size={12} fill="currentColor" />
-            Projects
+            Projekty
           </h2>
           <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold">
             {t.recentTitle}

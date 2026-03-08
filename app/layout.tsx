@@ -2,8 +2,8 @@ import './globals.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Marek Janasek - Digital Architect',
-  description: 'Portfolio showcasing modern web development and design',
+  title: 'Marek Janásek - Portfolio',
+  description: 'Portfolio dokumentující mé práce, koníčky a zájmy',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

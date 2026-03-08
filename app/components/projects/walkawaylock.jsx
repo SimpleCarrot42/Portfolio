@@ -2,7 +2,8 @@
 
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
-  ArrowRight, 
+  ArrowRight,
+  ArrowLeft,
   Settings, 
   Cpu, 
   Copy, 
@@ -33,7 +34,8 @@ const translations = {
     edgeFetch: "Bluetooth Detection",
     hydration: "Lock Mechanism",
     continueConvo: "Explore Codebase",
-    inquireNow: "GitHub Repository"
+    inquireNow: "GitHub Repository",
+    goBack: "Back"
   },
   CZ: {
     systemDoc: "Dokumentace WalkAway-Lock",
@@ -43,7 +45,7 @@ const translations = {
     auth: "Knihovny",
     speed: "Rychlost detekce",
     engineeringTitle: "Technický přehled",
-    defaultDescription: "WalkAway-Lock automaticky zamkne váš laptop, pokud se přednastavené Bluetooth zařízení dostane mimo dosah. Pomocí knihovny Bleak detekuje přítomnost zařízení s latencí ~3 s. Lehký, snadno konfigurovatelný kód, ideální pro Hackathony nebo veřejná místa.",
+    defaultDescription: "WalkAway-Lock automaticky zamkne váš laptop, pokud se přednastavené Bluetooth zařízení dostane mimo dosah. Pomocí knihovny Bleak detekuje přítomnost zařízení s latencí ~3 s. Lehký, snadno konfigurovatelný kód, ideální pro Hackathony nebo veřejná místa.",
     quote: "Bezpečnost je tak silná, jako její nejslabší článek.",
     envSetup: "Instalace a spuštění",
     perfBench: "Přehled výkonu",
@@ -52,7 +54,8 @@ const translations = {
     edgeFetch: "Detekce přes Bluetooth",
     hydration: "Mechanismus zámku",
     continueConvo: "Prozkoumat kód",
-    inquireNow: "GitHub Repozitář"
+    inquireNow: "GitHub Repozitář",
+    goBack: "Zpět"
   }
 };
 
@@ -85,21 +88,14 @@ const CodeBlock = ({ code, filename, isDark }) => {
   );
 };
 
-export default function ProjectPage({ setCurrentPage }) {
-  const [isDark, setIsDark] = useState(false);
-  const [lang, setLang] = useState("CZ");
-
-  const t = translations[lang] || translations.EN;
+export default function ProjectPage({ project, isDark, setIsDark, lang, setLang }) {
+  const t = translations[lang] || translations.CZ;
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
-  const project = {
+  const projectData = {
     title: "WalkAway-Lock",
     year: "2026",
-    description: {
-      EN: t.defaultDescription,
-      CZ: t.defaultDescription
-    },
     tags: ["Python", "Bleak", "Bluetooth", "Security", "Automation"]
   };
 
@@ -110,7 +106,6 @@ export default function ProjectPage({ setCurrentPage }) {
       
       <Navigation 
         currentPage="projects"
-        setCurrentPage={setCurrentPage}
         isDark={isDark}
         setIsDark={setIsDark}
         lang={lang}
@@ -123,6 +118,21 @@ export default function ProjectPage({ setCurrentPage }) {
         style={{ scaleX }} 
       />
 
+      {/* RETURN BUTTON */}
+      <div className="fixed top-28 left-6 md:left-12 z-[100]">
+        <button
+          onClick={() => window.history.back()}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all hover:scale-105 active:scale-95 ${
+            isDark
+              ? "bg-white/5 border-white/10 text-white hover:bg-white/10"
+              : "bg-black/5 border-black/10 text-black hover:bg-black/10"
+          }`}
+        >
+          <ArrowLeft size={16} />
+          <span className="text-xs font-bold uppercase tracking-widest">{t.goBack}</span>
+        </button>
+      </div>
+
       <header className="pt-64 pb-24 px-6 md:px-12 lg:px-24 max-w-[1400px] mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
@@ -132,12 +142,12 @@ export default function ProjectPage({ setCurrentPage }) {
           <div className="flex items-center gap-3 mb-8">
             <div className="w-2 h-2 rounded-full bg-orange-600 animate-pulse" />
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-30">
-              {t.systemDoc} // {project.year}
+              {t.systemDoc} // {project?.year || projectData.year}
             </span>
           </div>
 
           <h1 className="text-[12vw] md:text-[8vw] font-bold leading-[0.8] tracking-[-0.07em] uppercase">
-            {project.title}
+            {projectData.title}
           </h1>
         </motion.div>
 
@@ -169,7 +179,7 @@ export default function ProjectPage({ setCurrentPage }) {
             <p className={`text-lg leading-relaxed mb-8 ${
               isDark ? 'text-white/60' : 'text-black/60'
             }`}>
-              {project.description[lang]}
+              {t.defaultDescription}
             </p>
             <p className={`leading-relaxed italic ${
               isDark ? 'text-white/40' : 'text-black/40'
@@ -220,14 +230,15 @@ export default function ProjectPage({ setCurrentPage }) {
         </article>
 
         <div className="flex flex-col items-center justify-center mt-32 text-center">
-            <h2 className="text-4xl font-bold tracking-tighter uppercase mb-6">{t.continueConvo}</h2>
-            <a 
-              href="https://github.com/SimpleCarrot42/WalkAway-Lock" 
-              target="_blank" 
-              className="px-8 py-4 bg-orange-600 text-white rounded-full font-bold flex items-center gap-2 hover:bg-orange-700 transition-colors"
-            >
-              {t.inquireNow} <ArrowRight size={18} />
-            </a>
+          <h2 className="text-4xl font-bold tracking-tighter uppercase mb-6">{t.continueConvo}</h2>
+          <a 
+            href="https://github.com/SimpleCarrot42/WalkAway-Lock" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-10 py-5 bg-orange-600 text-white rounded-full font-bold flex items-center gap-3 hover:bg-orange-700 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-orange-600/20"
+          >
+            {t.inquireNow} <ArrowRight size={18} />
+          </a>
         </div>
 
       </main>

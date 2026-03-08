@@ -34,10 +34,10 @@ const translations = {
     namePlaceholder: "Vaše jméno",
     emailPlaceholder: "vas@email.cz",
     msgLabel: "Zpráva",
-    msgPlaceholder: "Řekněte mi o svém projektu...",
+    msgPlaceholder: "Sdělte své sdělení, člověče...",
     btnSend: "Odeslat zprávu",
     btnSending: "Odesílám...",
-    availability: "Dostupný pro spolupráci",
+    availability: "Dostupný pro brigády",
     success: "Úspěch! Vaše zpráva byla odeslána.",
     error: "Něco se nepovedlo. Zkuste to prosím znovu."
   }
@@ -117,7 +117,7 @@ export default function ContactPage({ lang }) {
               <p className="text-[10px] opacity-60 uppercase tracking-widest mb-1 font-bold">
                 {t.emailLabel}
               </p>
-              <p className="font-bold">marek@example.com</p>
+              <p className="font-bold">marek@janasek.tech</p>
             </div>
           </motion.a>
 
@@ -127,7 +127,7 @@ export default function ContactPage({ lang }) {
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.1, rotate: 5 }}
-              className="flex-1 p-8 rounded-3xl border-2 bg-white border-black/5 text-black hover:border-black/20 shadow-sm transition-all"
+              className="flex-1 p-8 rounded-3xl border-2 bg-white flex items-center justify-center border-black/5 text-black hover:border-black/20 shadow-sm transition-all"
             >
               <Github size={32} />
             </motion.a>
@@ -218,7 +218,7 @@ export default function ContactPage({ lang }) {
           transition={{ delay: 0.5, duration: 0.8, ease }}
           className="mt-12 text-center"
         >
-          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full border bg-green-50 border-green-200 text-green-700">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border bg-green-50 border-green-200 text-green-700">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             <span className="text-xs font-bold uppercase tracking-widest">
               {t.availability}
