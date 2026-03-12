@@ -22,7 +22,6 @@ const images = [
     img: "/images/ProjectPageImages/vinrad/login.png",
   },
 ];
-
 const translations = {
   CZ: {
     systemDoc: "Specifikace projektu",
@@ -32,19 +31,19 @@ const translations = {
     auth: "Hlavní stack",
     speed: "Hosting",
     desciptionTitle: "Popis",
-    defaultDescription: 'Tento script do vašeho minecraftového světu připojí bota kterého mužete ovládat, jedná se celkem o "cheat". Bot má totiž schopnost detekovat horniny, pro administrorátory toto muže vypadat jako podvádění. Užití je tedy s riziky',
+    defaultDescription: 'Tento skript do vašeho minecraftového světa připojí bota, kterého můžete ovládat. Jedná se v podstatě o „cheat“, protože bot má schopnost detekovat horniny, což může administrátorům připadat jako podvádění. Použití je tedy na vlastní riziko.',
     techdescTitle: "Technický přehled",
-    techDescription: 'Bot je závislý na knihovnách a proto jeho kompatibilita s verzemi hry může měnit. Pro připojení robota je nutné spustit server a umožnit "cracked" mód který povoluje připojení hráču bez účtu Mojang. V jádru se totiž bot jeví jako hráč. ',
+    techDescription: 'Bot je závislý na externích knihovnách, proto se jeho kompatibilita s verzemi hry může měnit. Pro připojení robota je nutné spustit server a povolit „cracked“ mód, který umožňuje připojení hráčů bez Mojang účtu. V jádru se totiž bot jeví jako běžný hráč.',
     perfBench: "Přehled příkazů",
     process: "Popis",
     latency: "Příkaz",
-    follow: "Nasledovaní hráče",
-    drop: "Dropování itemů",
+    follow: "Následování hráče",
+    drop: "Vyhození předmětů",
     miney: "Těžení rud",
     map: "Obrana oblasti",
     raid: "Destrukce",
     continueConvo: "Navštívit projekt",
-    inquireNow: "Github",
+    inquireNow: "GitHub",
     goBack: "Zpět"
   },
   EN: {
@@ -55,9 +54,9 @@ const translations = {
     auth: "Main Stack",
     speed: "Hosting",
     desciptionTitle: "Description",
-    defaultDescription: "This script adds a controllable bot to your Minecraft world. It's essentially a 'cheat' as the bot can detect ores, which might look like cheating to administrators. Use with caution.",
+    defaultDescription: "This script connects a controllable bot to your Minecraft world. It's essentially a utility that can be seen as a 'cheat' since the bot can detect ores through walls. Use with caution, as administrators may flag this behavior.",
     techdescTitle: "Technical Overview",
-    techDescription: "The bot depends on specific libraries; compatibility varies across game versions. Requires a 'cracked' mode server to allow connections without Mojang accounts.",
+    techDescription: "The bot relies on the Mineflayer library; compatibility varies across game versions. To connect the bot, the server must be in 'offline/cracked' mode to allow players without official Mojang/Microsoft authentication.",
     perfBench: "Command Overview",
     process: "Description",
     latency: "Command",
@@ -67,11 +66,10 @@ const translations = {
     map: "Guard area",
     raid: "Destruction",
     continueConvo: "Visit Project",
-    inquireNow: "Github",
+    inquireNow: "GitHub",
     goBack: "Back"
   }
 };
-
 export default function ProjectDetailPage({ project, isDark, setIsDark, lang, setLang }) {
   const t = translations[lang] || translations.CZ;
   const { scrollYProgress } = useScroll();
@@ -122,13 +120,6 @@ export default function ProjectDetailPage({ project, isDark, setIsDark, lang, se
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease }}
         >
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-2 h-2 rounded-full bg-orange-600" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-30">
-              {t.systemDoc} // {project?.year || "2026"}
-            </span>
-          </div>
-
           <h1 className="text-[12vw] md:text-[8vw] font-bold leading-[0.8] tracking-[-0.07em] uppercase">
             {displayTitle}
             <br />

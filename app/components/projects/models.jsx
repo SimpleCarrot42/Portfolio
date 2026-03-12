@@ -17,8 +17,8 @@ export default function LinktreePage({ setCurrentPage }) {
   const t = {
     title: "Modely",
     subtitle: "3D",
-    description: "Knihovna 3D modelů primárně pro FDM tiskárny.",
-    details: "System Index"
+    details: "System Index",
+    description: "V odkazech níže můžete vidět moje 3D modely, z nichž některé jsou remixované a některé originální. K modelování jsem používal Fusion 360 a s přechodem na Linux jsem začal používat Onshape. Převážně tisknu funkční věci, jako například můj remix držáku elektrod multimetru."
   };
 
   const platforms = [
@@ -56,19 +56,13 @@ export default function LinktreePage({ setCurrentPage }) {
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8, ease }}
-          className="mb-16"
+          className="mb-20"
         >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-2 h-2 rounded-full bg-black animate-pulse" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-30">
-              {t.subtitle} // v.2026
-            </span>
-          </div>
 
           <h1 className="text-[12vw] md:text-[80px] font-bold leading-[0.8] tracking-[-0.07em] uppercase mb-8">
             {t.title}
           </h1>
-          <p className="text-lg opacity-50 max-w-lg font-medium leading-relaxed">
+          <p className="text-lg opacity-50 max-w-7xl font-medium leading-relaxed">
             {t.description}
           </p>
         </motion.div>

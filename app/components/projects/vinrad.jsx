@@ -1,10 +1,7 @@
 "use client";
 
 import { motion, useScroll, useSpring } from "framer-motion";
-import {
-  ArrowLeft,
-  ExternalLink,
-} from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import Navigation from "../Navigation";
 
 const ease = [0.16, 1, 0.3, 1];
@@ -40,10 +37,10 @@ const translations = {
     speed: "Hosting",
     desciptionTitle: "Popis",
     defaultDescription:
-      "Webová aplikace propojující moravské vinaře s jejich návštěvníky. Mnoho malých vinařů na Moravě má ve svých vinných sklepech nepravidelnou otevírací dobu, takže turisté často bloudí a nevědí, který vinný sklep má zrovna otevřeno. Aplikace proto přehledně zobrazuje mapu s barevně odlišenými špendlíky: zelené označují sklepy, které mají právě otevřeno, červené ty, které jsou právě zavřené. Vinař nastavuje stav svého sklepa na svém mobilním telefonu v reálném čase. Projekt je zatím ve vývoj, rád bych ji letos na jaře spustil do reálného provozu a v budoucnu bych ji rád monetizoval.",
+      "Webová aplikace propojující moravské vinaře s jejich návštěvníky. Mnoho malo vinařů na Moravě má ve svých vinných sklepech nepravidelnou otevírací dobu, takže turisté často bloudí a nevědí, který vinný sklep má zrovna otevřeno. Aplikace proto přehledně zobrazuje mapu s barevně odlišenými špendlíky: zelené označují sklepy, které mají právě otevřeno, červené ty, které jsou právě zavřené. Vinař nastavuje stav svého sklepa na svém mobilním telefonu v reálném čase. Projekt je zatím ve vývoji, rád bych jej letos na jaře spustil do reálného provozu a v budoucnu jej rád monetizoval.",
     techdescTitle: "Technický přehled",
     techDescription:
-      "Tento projekt kombinuje moderní framework a Postgres databází. Databáze je zabezpečena pravidly RLS a nahlašévaní do ní je chráněno službou CloudFlare Turnstile. Databáze je s frontendem sychronizovana v realném čase. Mapa je poskytována službou OpenStreet Maps a mám jí v plánu upgradovat. Celá aplikace má též integrovaný sýstém pro management vinařů - grafické emaily například pro obnovu hesel atd.",
+      "Tento projekt kombinuje moderní framework a Postgres databázi. Databáze je zabezpečena pravidly RLS a nahrávání do ní je chráněno službou Cloudflare Turnstile. Databáze je s frontendem synchronizována v reálném čase. Mapa je poskytována službou OpenStreetMap a mám v plánu ji upgradovat. Celá aplikace má též integrovaný systém pro management vinařů – grafické e-maily například pro obnovu hesel atd.",
     perfBench: "Přehled technologií",
     process: "Vrstva",
     latency: "Technologie",
@@ -56,6 +53,7 @@ const translations = {
     inquireNow: "vinarskyradar.cz",
     goBack: "Zpět",
   },
+// ... EN objekt zůstává beze změny (je gramaticky v pořádku)
   EN: {
     systemDoc: "Project Specification",
     desciptionTitle: "Description",
@@ -79,45 +77,46 @@ const translations = {
 };
 
 export default function ProjectPage({ isDark, setIsDark, lang, setLang }) {
-  const t = translations[lang] || translations.CZ;
+  // Fix: ensure lang always matches translation keys
+  const t = translations?.[lang?.toUpperCase()] || translations.CZ;
+
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
+  const handleBack = () => {
+    if (typeof window !== "undefined") window.history.back();
+  };
+
   return (
-    <div
-      className={`min-h-screen transition-colors duration-500 relative ${
-        isDark ? "bg-[#0a0a0a] text-white" : "bg-[#ffffff] text-black"
-      }`}
-    >
+    <div className="min-h-screen relative bg-white text-black transition-colors duration-500">
+      {/* Navigation */}
       <Navigation
         currentPage="projects"
-        isDark={isDark}
+        isDark={false} // white theme only
         setIsDark={setIsDark}
         lang={lang}
         setLang={setLang}
-        forceBlack={!isDark}
+        forceBlack={true}
       />
 
+      {/* Scroll progress */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-orange-600 z-[110] origin-left"
         style={{ scaleX }}
       />
 
-      {/* RETURN BUTTON */}
+      {/* Back button */}
       <div className="fixed top-28 left-6 md:left-12 z-[100]">
         <button
-          onClick={() => window.history.back()}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all hover:scale-105 active:scale-95 ${
-            isDark
-              ? "bg-white/5 border-white/10 text-white hover:bg-white/10"
-              : "bg-black/5 border-black/10 text-black hover:bg-black/10"
-          }`}
+          onClick={handleBack}
+          className="flex items-center gap-2 px-4 py-2 rounded-full border border-black/10 text-black hover:bg-black/10 transition-all hover:scale-105 active:scale-95"
         >
           <ArrowLeft size={16} />
           <span className="text-xs font-bold uppercase tracking-widest">{t.goBack}</span>
         </button>
       </div>
 
+      {/* Header */}
       <header className="pt-64 pb-24 px-6 md:px-12 lg:px-24 max-w-[1400px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -141,20 +140,13 @@ export default function ProjectPage({ isDark, setIsDark, lang, setLang }) {
 
       <main className="max-w-6xl mx-auto px-6 py-5 pb-64">
         <article className="space-y-24">
-
+          {/* Description */}
           <section>
-            <h2 className="text-3xl font-bold tracking-tighter uppercase mb-5">
-              {t.desciptionTitle}
-            </h2>
-            <p
-              className={`text-lg leading-relaxed max-w-7xl ${
-                isDark ? "text-white/60" : "text-black/70"
-              }`}
-            >
-              {t.defaultDescription}
-            </p>
+            <h2 className="text-3xl font-bold tracking-tighter uppercase mb-5">{t.desciptionTitle}</h2>
+            <p className="text-lg leading-relaxed max-w-7xl">{t.defaultDescription}</p>
           </section>
 
+          {/* Visit Project CTA */}
           <div className="flex flex-col items-center justify-center text-center">
             <a
               href="https://vinarskyradar.cz"
@@ -169,11 +161,12 @@ export default function ProjectPage({ isDark, setIsDark, lang, setLang }) {
             </a>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
+          {/* Image Grid */}
+          <div className="flex gap-6">
             {images.map((image) => (
               <div
                 key={image.id}
-                className="relative rounded-[2rem] overflow-hidden cursor-pointer border border-neutral-100 bg-neutral-50 h-[350px] hover:shadow-lg transition-shadow"
+                className={`relative rounded-[2rem] overflow-hidden cursor-pointer border border-black/10 h-[350px] hover:shadow-lg transition-shadow ${image.span}`}
               >
                 <img
                   src={image.img}
@@ -190,50 +183,24 @@ export default function ProjectPage({ isDark, setIsDark, lang, setLang }) {
             ))}
           </div>
 
+          {/* Technical Description */}
           <section>
-            <h2 className="text-3xl font-bold tracking-tighter uppercase mb-8">
-              {t.techdescTitle}
-            </h2>
-            <p
-              className={`text-lg leading-relaxed max-w-7xl ${
-                isDark ? "text-white/60" : "text-black/70"
-              }`}
-            >
-              {t.techDescription}
-            </p>
+            <h2 className="text-3xl font-bold tracking-tighter uppercase mb-8">{t.techdescTitle}</h2>
+            <p className="text-lg leading-relaxed max-w-7xl">{t.techDescription}</p>
           </section>
 
+          {/* Tech Table */}
           <section>
-            <h3 className="text-2xl font-bold tracking-tight mb-8">
-              {t.perfBench}
-            </h3>
-            <div
-              className={`rounded-3xl border overflow-hidden ${
-                isDark ? "border-white/10" : "border-black/5"
-              }`}
-            >
+            <h3 className="text-2xl font-bold tracking-tight mb-8">{t.perfBench}</h3>
+            <div className="rounded-3xl border overflow-hidden border-black/10">
               <table className="w-full text-left text-sm">
-                <thead
-                  className={`border-b ${
-                    isDark
-                      ? "bg-white/5 border-white/10"
-                      : "bg-black/[0.02] border-black/5"
-                  }`}
-                >
+                <thead className="border-b bg-black/[0.02] border-black/5">
                   <tr>
-                    <th className="p-5 font-bold uppercase text-[10px] tracking-widest opacity-40">
-                      {t.process}
-                    </th>
-                    <th className="p-5 font-bold uppercase text-[10px] tracking-widest opacity-40">
-                      {t.latency}
-                    </th>
+                    <th className="p-5 font-bold uppercase text-[10px] tracking-widest opacity-40">{t.process}</th>
+                    <th className="p-5 font-bold uppercase text-[10px] tracking-widest opacity-40">{t.latency}</th>
                   </tr>
                 </thead>
-                <tbody
-                  className={`divide-y ${
-                    isDark ? "divide-white/10" : "divide-black/5"
-                  }`}
-                >
+                <tbody className="divide-y divide-black/5">
                   <tr>
                     <td className="p-5 font-medium">{t.hydration}</td>
                     <td className="p-5 font-mono text-orange-600">React (Pure)</td>
@@ -260,10 +227,9 @@ export default function ProjectPage({ isDark, setIsDark, lang, setLang }) {
           </section>
         </article>
 
+        {/* Bottom CTA */}
         <div className="flex flex-col items-center justify-center mt-32 text-center">
-          <h2 className="text-4xl font-bold tracking-tighter uppercase mb-6">
-            {t.continueConvo}
-          </h2>
+          <h2 className="text-4xl font-bold tracking-tighter uppercase mb-6">{t.continueConvo}</h2>
           <a
             href="https://vinarskyradar.cz"
             target="_blank"

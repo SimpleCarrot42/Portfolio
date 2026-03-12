@@ -25,9 +25,9 @@ const translations = {
     error: "Something went wrong. Please try again."
   },
   CZ: {
-    titleTop: "Pojďme tvořit",
-    titleBottom: "Něco skvělého",
-    subTitle: "Máte nápad na projekt? Pojďme si o tom promluvit.",
+    titleTop: "Kontakutje te mě!",
+    titleBottom: "",
+    subTitle: "Máte nápad na projekt nebo potřebujete něco konzultovat? Neváhejte a  kontatujte mě.",
     emailLabel: "Email",
     formTitle: "Napište mi zprávu",
     nameLabel: "Jméno",
@@ -211,20 +211,6 @@ export default function ContactPage({ lang }) {
           </div>
         </motion.form>
 
-        {/* Availability Badge */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.8, ease }}
-          className="mt-12 text-center"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border bg-green-50 border-green-200 text-green-700">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-xs font-bold uppercase tracking-widest">
-              {t.availability}
-            </span>
-          </div>
-        </motion.div>
       </motion.div>
     </div>
   );

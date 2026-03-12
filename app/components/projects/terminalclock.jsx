@@ -1,10 +1,7 @@
 "use client";
 
 import { motion, useScroll, useSpring } from "framer-motion";
-import {
-  ArrowLeft,
-  ExternalLink,
-} from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import Navigation from "../Navigation";
 
 const ease = [0.16, 1, 0.3, 1];
@@ -14,15 +11,15 @@ const translations = {
     systemDoc: "Specifikace projektu",
     desciptionTitle: "Popis",
     defaultDescription:
-      "Terminal Clock je minimalistická aplikace která zobrazuje čas přímo v terminálu. Projekt byl vytvořen jako experiment s jednoduchým CLI rozhraním a realtime aktualizací času.",
+      "Terminal Clock je minimalistická aplikace, která zobrazuje čas přímo v terminálu. Projekt byl vytvořen jako experiment s jednoduchým CLI rozhraním a realtime aktualizací času.",
     techdescTitle: "Technický přehled",
     techDescription:
-      "Program běží přímo v terminálu a využívá jednoduchý loop pro aktualizaci času každou sekundu. Využívá standardní systémové funkce pro práci s časem a ANSI escape sekvence pro vykreslování výstupu.",
+      "Program běží přímo v terminálu a využívá jednoduchý loop pro aktualizaci času každou sekundu. Využívá knihovny Textual a psutil, které je nutné před spuštěním nainstalovat.",
     perfBench: "Přehled příkazů",
     process: "Popis",
     latency: "Příkaz",
     continueConvo: "Navštívit projekt",
-    inquireNow: "Github",
+    inquireNow: "GitHub",
     goBack: "Zpět",
   },
   EN: {
@@ -37,10 +34,18 @@ const translations = {
     process: "Description",
     latency: "Command",
     continueConvo: "Visit Project",
-    inquireNow: "Github",
+    inquireNow: "GitHub",
     goBack: "Back",
   },
 };
+
+const images = [
+  {
+    id: "h1",
+    title: "Ukázka terminálu",
+    img: "/images/ProjectPageImages/terminalclock/home.png",
+  }
+];
 
 export default function ProjectDetailPage({ project, isDark, setIsDark, lang, setLang }) {
   const t = translations[lang] || translations.CZ;
@@ -50,13 +55,18 @@ export default function ProjectDetailPage({ project, isDark, setIsDark, lang, se
   const displayTitle = "Terminal";
   const displaySubtitle = "Clock";
 
+  const handleBack = () => {
+    if (typeof window !== "undefined") {
+      window.history.back();
+    }
+  };
+
   return (
     <div
       className={`min-h-screen transition-colors duration-500 relative ${
         isDark ? "bg-[#0a0a0a] text-white" : "bg-[#ffffff] text-black"
       }`}
     >
-      {/* NAVBAR COMPONENT */}
       <Navigation
         currentPage="projects"
         isDark={isDark}
@@ -66,28 +76,27 @@ export default function ProjectDetailPage({ project, isDark, setIsDark, lang, se
         forceBlack={!isDark}
       />
 
-      {/* Scroll Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-orange-600 z-[110] origin-left"
         style={{ scaleX }}
       />
 
-      {/* RETURN BUTTON */}
       <div className="fixed top-28 left-6 md:left-12 z-[100]">
         <button
-          onClick={() => window.history.back()}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all hover:scale-105 active:scale-95 ${
+          onClick={handleBack}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all hover:scale-105 active:scale-95 shadow-sm ${
             isDark
               ? "bg-white/5 border-white/10 text-white hover:bg-white/10"
               : "bg-black/5 border-black/10 text-black hover:bg-black/10"
           }`}
         >
           <ArrowLeft size={16} />
-          <span className="text-xs font-bold uppercase tracking-widest">{t.goBack}</span>
+          <span className="text-xs font-bold uppercase tracking-widest">
+            {t.goBack}
+          </span>
         </button>
       </div>
 
-      {/* HEADER */}
       <header className="pt-64 pb-24 px-6 md:px-12 lg:px-24 max-w-[1400px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -121,7 +130,31 @@ export default function ProjectDetailPage({ project, isDark, setIsDark, lang, se
             </p>
           </section>
 
-          {/* TECHNICAL OVERVIEW */}
+          {/* IMAGE SECTION - Adjusted to match text width */}
+          <section className="w-full">
+            {images.map((image) => (
+              <div
+                key={image.id}
+                className={`relative rounded-[2rem] overflow-hidden border ${
+                  isDark ? "border-white/10" : "border-black/10"
+                } w-full aspect-video md:aspect-[21/9] hover:shadow-lg transition-shadow`}
+              >
+                <img
+                  src={image.img}
+                  alt={image.title}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute bottom-8 left-8">
+                  <span className="text-white text-[10px] font-black uppercase tracking-[0.2em] bg-black/40 backdrop-blur-md px-4 py-1.5 rounded-full">
+                    {image.title}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </section>
+
+          {/* TECH OVERVIEW */}
           <section>
             <h2 className="text-3xl font-bold tracking-tighter uppercase mb-8">
               {t.techdescTitle}
@@ -130,46 +163,8 @@ export default function ProjectDetailPage({ project, isDark, setIsDark, lang, se
               {t.techDescription}
             </p>
           </section>
-
-          {/* COMMANDS TABLE */}
-          <section>
-            <h3 className="text-2xl font-bold tracking-tight mb-8">{t.perfBench}</h3>
-            <div
-              className={`rounded-3xl border overflow-hidden ${
-                isDark ? "border-white/10" : "border-black/5"
-              }`}
-            >
-              <table className="w-full text-left text-sm">
-                <thead
-                  className={`border-b ${
-                    isDark ? "bg-white/5 border-white/10" : "bg-black/[0.02] border-black/5"
-                  }`}
-                >
-                  <tr>
-                    <th className="p-5 font-bold uppercase text-[10px] tracking-widest opacity-40">{t.process}</th>
-                    <th className="p-5 font-bold uppercase text-[10px] tracking-widest opacity-40">{t.latency}</th>
-                  </tr>
-                </thead>
-                <tbody className={`divide-y ${isDark ? "divide-white/10" : "divide-black/5"}`}>
-                  {[
-                    { label: "Start Clock", val: "node terminal-clock.js" },
-                    { label: "Stop Clock", val: "CTRL + C" },
-                    { label: "Change Format", val: "Press F to toggle 12/24h" },
-                    { label: "Toggle Color Mode", val: "Press C to toggle dark/light" },
-                    { label: "Help", val: "Press H to show commands" },
-                  ].map((row, i) => (
-                    <tr key={i}>
-                      <td className="p-5 font-medium">{row.label}</td>
-                      <td className="p-5 font-mono text-orange-600">{row.val}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
         </article>
 
-        {/* BOTTOM CTA */}
         <div className="flex flex-col items-center justify-center mt-32 text-center">
           <h2 className="text-4xl font-bold tracking-tighter uppercase mb-6">{t.continueConvo}</h2>
           <a

@@ -45,16 +45,16 @@ const translations = {
     auth: "Knihovny",
     speed: "Rychlost detekce",
     engineeringTitle: "Technický přehled",
-    defaultDescription: "WalkAway-Lock automaticky zamkne váš laptop, pokud se přednastavené Bluetooth zařízení dostane mimo dosah. Pomocí knihovny Bleak detekuje přítomnost zařízení s latencí ~3 s. Lehký, snadno konfigurovatelný kód, ideální pro Hackathony nebo veřejná místa.",
+    defaultDescription: "WalkAway-Lock automaticky zamkne váš laptop, pokud se přednastavené Bluetooth zařízení dostane mimo dosah. Pomocí knihovny Bleak detekuje přítomnost zařízení s latencí ~3 s. Jde o lehký, snadno konfigurovatelný kód, ideální pro hackathony nebo veřejná místa.",
     quote: "Bezpečnost je tak silná, jako její nejslabší článek.",
-    envSetup: "Instalace a spuštění",
+    envSetup: "Instalační příkazy", // Změněno z "Instalace a spuštění" pro lepší kontext CodeBlocku
     perfBench: "Přehled výkonu",
     process: "Subsystém",
     latency: "Latence",
     edgeFetch: "Detekce přes Bluetooth",
     hydration: "Mechanismus zámku",
     continueConvo: "Prozkoumat kód",
-    inquireNow: "GitHub Repozitář",
+    inquireNow: "GitHub repozitář",
     goBack: "Zpět"
   }
 };
@@ -150,25 +150,6 @@ export default function ProjectPage({ project, isDark, setIsDark, lang, setLang 
             {projectData.title}
           </h1>
         </motion.div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20">
-          {[
-            { label: t.status, val: t.optimized, icon: <Settings size={14}/> },
-            { label: t.logic, val: "Python 3.10+", icon: <Cpu size={14}/> },
-            { label: t.auth, val: "Bleak + asyncio", icon: <Layout size={14}/> },
-            { label: t.speed, val: "~3s", icon: <Lock size={14}/> }
-          ].map((w, i) => (
-            <div key={i} className={`p-8 rounded-3xl border flex flex-col justify-between h-40 transition-transform hover:scale-[1.02] ${
-              isDark ? 'bg-white/5 border-white/10' : 'bg-[#f9f9f9] border-black/5'
-            }`}>
-              <div className="text-orange-600">{w.icon}</div>
-              <div>
-                <p className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-30 mb-1">{w.label}</p>
-                <p className="text-sm font-bold uppercase tracking-tight">{w.val}</p>
-              </div>
-            </div>
-          ))}
-        </div>
       </header>
 
       <main className="max-w-6xl mx-auto px-6 py-24 pb-64">
@@ -180,11 +161,6 @@ export default function ProjectPage({ project, isDark, setIsDark, lang, setLang 
               isDark ? 'text-white/60' : 'text-black/60'
             }`}>
               {t.defaultDescription}
-            </p>
-            <p className={`leading-relaxed italic ${
-              isDark ? 'text-white/40' : 'text-black/40'
-            }`}>
-              "{t.quote}"
             </p>
           </section>
 

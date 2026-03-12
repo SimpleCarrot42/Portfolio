@@ -42,7 +42,10 @@ export default function Footer() {
             className="text-[10px] font-medium tracking-[0.2em] uppercase italic"
             style={{ color: subtleColor }}
           >
-            Developed by hand
+            Aplikace Vyvinuta za využití nástrojů AI <br />
+            Najděte více na <a href="/aiusage" className="bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent italic font-bold">
+              prohlášení o užití AI
+            </a>
           </span>
         </div>
       </div>

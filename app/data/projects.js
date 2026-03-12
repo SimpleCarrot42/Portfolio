@@ -15,6 +15,22 @@ export const projects = [
     tags: ["React", "PostgresSQL", "Leaflet", "RLS"],
   },
     {
+    id: "01",
+    slug: "homeserver",
+    title: "Homeserver",
+    pinned: true,
+    inDevelopment: true,
+    category: { EN: "Full-Stack Platform", CZ: "Homeserver" },
+    description: {
+      EN: "Secure file-sharing platform built with Next.js and Go.",
+      CZ: "Můj vlastní homeserver. Jehož nastavení jsem hojně dokumnetoval. "
+    },
+    image: "/images/projects/1.png", 
+    year: "2025",
+    tags: ["Alpine Linux", "Docker", "Homeserver"],
+  },
+
+    {
     id: "06",
     slug: "models",
     title: "3D Tisk",
@@ -88,21 +104,5 @@ export const projects = [
     image: "/images/projects/5.png",
     year: "2026",
     tags: ["Node.js", "Mineflayer", "Pathfinding"],
-  },
-    {
-    id: "01",
-    slug: "godrive",
-    title: "GoDrive",
-    pinned: false,
-    inDevelopment: true,
-    category: { EN: "Full-Stack Platform", CZ: "Full-Stack Platforma" },
-    description: {
-      EN: "Secure file-sharing platform built with Next.js and Go.",
-      CZ: "Zabezpečená platforma pro sdílení souborů postavená na Next.js a Go."
-    },
-    image: "/images/projects/1.png", 
-    year: "2026",
-    tags: ["Next.js", "Go", "PostgreSQL"],
   }
-
 ];

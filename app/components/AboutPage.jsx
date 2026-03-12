@@ -84,11 +84,6 @@ export default function AboutPage({ lang = "CZ" }) {
             <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-[2.5rem]" />
           </div>
           
-          <div className="mt-6 flex items-center gap-3 px-2">
-            {/* */}
-            <div className="w-2.5 h-2.5 bg-green-500 rounded-full" />
-            <span className="text-[11px] font-bold uppercase tracking-widest opacity-50">Active • 2026 Status</span>
-          </div>
         </motion.div>
 
         {/* Text Content */}
@@ -118,13 +113,6 @@ export default function AboutPage({ lang = "CZ" }) {
             </div>
           </motion.div>
           
-          <div className="flex items-center gap-6 pt-6 opacity-20">
-             <Terminal size={24} />
-             <Code2 size={24} />
-             <Cpu size={24} />
-             <Binary size={24} />
-             <Globe size={24} />
-          </div>
         </div>
       </div>
 

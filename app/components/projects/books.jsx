@@ -10,7 +10,7 @@ const ease = [0.16, 1, 0.3, 1];
 const images = [
   {
     id: "h1",
-    title: "Home",
+    title: "Domovská stránka",
     img: "/images/ProjectPageImages/books/home.png",
   },
   {
@@ -30,21 +30,16 @@ const translations = {
     speed: "Hosting",
     desciptionTitle: "Popis",
     defaultDescription:
-      "Jedna z mých prvních webových stránek která ověřila znalosti získané na letní škole, zobrazuje knihy ktéré jsem prečetl v roce 2024. Poté už jsem knihy další knihy nepřidával. Motivací bylo digitalizovat můj školní čtenářský deník, a otestovat své znalosti.",
+      "Jedna z mých prvních webových stránek, která ověřila znalosti získané na letní škole. Zobrazuje knihy, které jsem přečetl v roce 2024. Poté už jsem další knihy nepřidával a na tomto webu nepracoval. Motivací byla digitalizace mého školního čtenářského deníku a otestování vlastních znalostí.",
     techdescTitle: "Technický přehled",
     techDescription:
-      "Celý web je velmi jednoduchý a je postavený na HTML,CSS,JS. Projekt néma databázi s kterými jsem v době vývoje neuměl pracovat, a proto jsou likes/dislikes ukládány pouze lokálně. Habruger menu je též pouze experimentálni a chtěl jsem si sním pohrát, podstránky vněm uváděné neexistují. Uznávám že jsem je mohl dodělat ale byl jsem pln nadšení pro další projekty",
-    perfBench: "Přehled příkazů",
+      "Celý web je velmi jednoduchý, postavený na HTML, CSS a JS. Projekt nemá databázi, se kterou jsem v době vývoje neuměl pracovat, a proto jsou likes/dislikes ukládány pouze lokálně. Hamburger menu je také pouze experimentální – chtěl jsem si s ním pohrát, takže podstránky v něm uváděné neexistují. Uznávám, že jsem je mohl dodělat, ale tehdy jsem byl plný nadšení pro další projekty.",
+    perfBench: "Přehled funkcí",
     process: "Popis",
     latency: "Příkaz",
-    follow: "Nasledovaní hráče",
-    drop: "Dropování itemů",
-    miney: "Těžení rud",
-    map: "Obrana oblasti",
-    raid: "Destrukce",
     continueConvo: "Navštívit projekt",
-    inquireNow: "Github Repo",
-    inquireNow2: "Books",
+    inquireNow: "GitHub Repo",
+    inquireNow2: "Live Demo",
     goBack: "Zpět",
   },
 };
@@ -61,7 +56,7 @@ export default function ProjectDetailPage({
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
   const displayTitle = "Books";
-  const displaySubtitle = null;
+  const displaySubtitle = "";
 
   return (
     <div
@@ -69,7 +64,6 @@ export default function ProjectDetailPage({
         isDark ? "bg-[#0a0a0a] text-white" : "bg-[#ffffff] text-black"
       }`}
     >
-      {/* NAVBAR COMPONENT */}
       <Navigation
         currentPage="projects"
         isDark={isDark}
@@ -79,13 +73,11 @@ export default function ProjectDetailPage({
         forceBlack={!isDark}
       />
 
-      {/* Scroll Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-orange-600 z-[110] origin-left"
         style={{ scaleX }}
       />
 
-      {/* RETURN BUTTON */}
       <div className="fixed top-28 left-6 md:left-12 z-[100]">
         <button
           onClick={() => window.history.back()}
@@ -111,7 +103,7 @@ export default function ProjectDetailPage({
           <div className="flex items-center gap-3 mb-8">
             <div className="w-2 h-2 rounded-full bg-orange-600" />
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-30">
-              {t.systemDoc} // {project?.year || "2026"}
+              {t.systemDoc} // {project?.year || "2024"}
             </span>
           </div>
 
@@ -136,17 +128,11 @@ export default function ProjectDetailPage({
             </p>
           </section>
 
-          {/* OBRAZKY SEM*/}
-          <div className="grid grid-cols-2 gap-6">
-            {images.map((image, idx) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {images.map((image) => (
               <div
                 key={image.id}
-                onClick={() => {
-                  setSelectedImg(image);
-                  setCurrentIndex(idx);
-                  setViewType("hobby");
-                }}
-                className="relative rounded-[2rem] overflow-hidden cursor-pointer border border-neutral-100 bg-neutral-50 h-[350px] hover:shadow-lg transition-shadow"
+                className={`relative rounded-[2rem] overflow-hidden border ${isDark ? 'border-white/10' : 'border-neutral-100'} bg-neutral-50 h-[350px] hover:shadow-lg transition-all`}
               >
                 <img
                   src={image.img}
@@ -176,27 +162,26 @@ export default function ProjectDetailPage({
           </section>
         </article>
 
-        {/* BOTTOM CTA */}
-        <div className="flex flex-col items-center justify-denter mt-32 text-center">
+        <div className="flex flex-col items-center justify-center mt-32 text-center">
           <h2 className="text-4xl font-bold tracking-tighter uppercase mb-10">
             {t.continueConvo}
           </h2>
-          <div className="flex gap-6">
+          <div className="flex flex-col md:flex-row gap-6">
             <a
               href="https://github.com/SimpleCarrot42/Books"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-10 py-5 bg-orange-600 text-white rounded-full font-bold flex items-center gap-3 hover:bg-orange-700 transition-all hover:sclae-105 active:scale-95 shadow-xl shadow-orange-600/20"
+              className="px-10 py-5 bg-orange-600 text-white rounded-full font-bold flex items-center gap-3 hover:bg-orange-700 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-orange-600/20"
             >
-              {t.inquireNow} <ExternalLink size={18}></ExternalLink>
+              {t.inquireNow} <ExternalLink size={18} />
             </a>
             <a
               href="https://simplecarrot42.github.io/Books/"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-10 py-5 bg-orange-600 text-white rounded-full font-bold flex items-center gap-3 hover:bg-orange-700 transition-all hover:sclae-105 active:scale-95 shadow-xl shadow-orange-600/20"
+              className="px-10 py-5 bg-orange-600 text-white rounded-full font-bold flex items-center gap-3 hover:bg-orange-700 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-orange-600/20"
             >
-              {t.inquireNow2} <ExternalLink size={18}></ExternalLink>
+              {t.inquireNow2} <ExternalLink size={18} />
             </a>
           </div>
         </div>
